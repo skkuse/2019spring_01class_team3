@@ -1,2 +1,10 @@
 # 2019spring_01class_team3
-Team 3
+김선민     
+박수현    
+이교영  
+장현수  
+한대룡  
+
+
+# Proposal
+repo://docs/proposal
