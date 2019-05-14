@@ -1,9 +1,35 @@
+/* 전체 적용 */
+a {
+    font-family: 'Nanum Gothic', sans-serif;
+}
+.brand-name {
+    font-family: 'Nanum Pen Script', cursive;
+}
+
+
 /* Navbar */
-/*  */
-.brand-name{
 
+.navbar {
+    padding-bottom: 0px;
 }
 
-.navbar-menu-text{
-
+.navbar h2 {
+    margin-bottom: 0px;
 }
+
+/* 왼쪽 카테고리 or 브랜드 리스트 */
+.left-list {
+    margin-top: 30px;
+}
+
+#select-cat-brand {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+    color: '#6c757d99';
+}
+
+#list-brand {
+    display: none;
+}
+
