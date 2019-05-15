@@ -15,7 +15,6 @@
     <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Pen+Script" rel="stylesheet">
 
 
-    <link rel="stylesheet" href="{% static 'css/shop-homepage.css' %}">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <script src="{% static 'js/index.js' %}"></script>
 
@@ -44,7 +43,7 @@
                         <a class="nav-link" href="{% url 'login' %}">Sign in</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="register/">Sign up</a>
+                        <a class="nav-link" href="{% url 'register' %}">Sign up</a>
                     </li>
                 </ul>
             </div>
@@ -79,17 +78,19 @@
                     <a href="#" class="list-group-item">Alexander Mcquin</a>
                 </div>
 
+                <!-- /.col-lg-3 left-list -->
             </div>
-            <!-- /.col-lg-3 left-list -->
 
-            {% block content %}
-            {% endblock %}
+            <div class="col-lg-9">
+                {% block content %}
+                {% endblock %}
 
+            </div>
             <!-- /.row -->
-
         </div>
         <!-- /.container -->
     </div>
+
     <!-- Footer -->
     <footer class="py-5 bg-dark ">
         <p class="m-0 text-center text-white">직구 가격 비교 서비스, <span class="brand-name" style="font-size: larger">직변</span>

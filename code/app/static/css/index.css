@@ -1,7 +1,11 @@
 /* 전체 적용 */
-a {
+body {
+    padding-top: 56px;
     font-family: 'Nanum Gothic', sans-serif;
-}
+
+  }
+
+  
 .brand-name {
     font-family: 'Nanum Pen Script', cursive;
 }
@@ -29,7 +33,20 @@ a {
     color: '#6c757d99';
 }
 
+#select-brand {
+    color: #6c757d99;
+}
+
 #list-brand {
     display: none;
 }
 
+/* 상품 표시 */
+.origin-price {
+    text-decoration: line-through;
+    font-size: small;
+    color: #6c757d99;
+}
+.disc-price {
+    font-size: large;
+}

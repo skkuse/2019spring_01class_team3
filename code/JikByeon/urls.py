@@ -21,4 +21,5 @@ from django.urls import path, re_path
 urlpatterns = [
     re_path('^$', views.home, name="home"),
     re_path('^login/$', views.login, name="login"),
+    re_path('^register/$', views.register, name="register"),
 ]

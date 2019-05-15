@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
+# from forms import UserRegisterForm
 
 # Create your views here.
 
@@ -9,5 +11,5 @@ def home(request):
 def login(request):
     return render(request, 'login.html')
 
-def register(requeset):
+def register(request):
     return render(request, 'register.html')
