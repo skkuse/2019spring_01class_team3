@@ -15,11 +15,13 @@ Including another URLconf
 """
 
 from app import views
-from django.urls import path, re_path
+from django.urls import path, re_path, include
+from django.contrib import admin
+from app import views as user_views
 
 
 urlpatterns = [
     re_path('^$', views.home, name="home"),
-    re_path('^login/$', views.login, name="login"),
-    re_path('^register/$', views.register, name="register"),
+    re_path('^register/$', user_views.register, name='register'),
+    path('', include('app.urls')),
 ]
