@@ -32,59 +32,21 @@
 
 <!-- 할인 많이 하는 상품 top N개 -->
 <div class="row">
+
+  {% for p in products %}
   <div class="col-lg-4 col-md-6 mb-4">
     <div class="card h-100">
-      <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+      <a href="#"><img class="card-img-top" src="media/img/products/{{p.pcode}}.jpg" alt=""></a>
       <div class="card-body">
-        <h4 class="card-title">
-          <a href="#">Item One</a>
-        </h4>
-        <span class="origin-price">$18.99</span> <span class="disc-price">$15.99</span>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+        <p class="card-title">
+          <a href="#">{{p.pname}}</a>
+        </p>
+        <p class="card-text">{{p.brand}}</p>
+        <span class="origin-price">{{p.price}}</span> <span class="disc-price">{{p.price}}</span>
       </div>
     </div>
   </div>
-
-  <div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-      <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-      <div class="card-body">
-        <h4 class="card-title">
-          <a href="#">Item Two</a>
-        </h4>
-        <span class="origin-price">$24.99</span> <span class="disc-price">$20.99</span>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem
-          ipsum dolor sit amet.</p>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-      <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-      <div class="card-body">
-        <h4 class="card-title">
-          <a href="#">Item Three</a>
-        </h4>
-        <span class="origin-price">$34.79</span> <span class="disc-price">$29.99</span>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="col-lg-4 col-md-6 mb-4">
-    <div class="card h-100">
-      <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-      <div class="card-body">
-        <h4 class="card-title">
-          <a href="#">Item Four</a>
-        </h4>
-        <span class="origin-price">$24.99</span> <span class="disc-price">$20.99</span>
-        <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
-      </div>
-    </div>
-  </div>
+  {% endfor %}
 </div>
 <!-- /.row -->
 

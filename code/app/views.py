@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
+from .models import *
 
 # from forms import UserRegisterForm
 
@@ -8,7 +9,9 @@ from .forms import UserRegisterForm
 
 
 def home(request):
-    return render(request, 'index.html')
+    products = Product.objects.all()
+
+    return render(request, 'index.html', {'products':products})
 
 
 def login(request):
