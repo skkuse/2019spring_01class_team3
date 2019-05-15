@@ -1,14 +1,13 @@
 from django.db import models
 
 # Create your models here.
-class User(models.Model):
-    email = models.EmailField()
-    password = models.TextField()
-    phone_num = models.TextField()
-
 class Country(models.Model):
     cid = models.IntegerField(primary_key=True)
     cname = models.TextField()
+    short_cmane = models.TextField()
+
+    def __str__(self):
+        return str(self.cid) + ", " + self.cname
 
 
 class Product(models.Model):
@@ -20,3 +19,6 @@ class Product(models.Model):
     price = models.IntegerField()
     url = models.URLField()
     cid = models.ForeignKey(Country, on_delete = models.CASCADE)
+
+    def __str__(self):
+        return str(self.pid) + ", " + self.pname + ", " + str(self.cid)

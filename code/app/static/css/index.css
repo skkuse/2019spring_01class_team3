@@ -44,7 +44,7 @@ body {
 /* 상품 표시 */
 .origin-price {
     text-decoration: line-through;
-    font-size: small;
+    font-size: x-small;
     color: #6c757d99;
 }
 .disc-price {
