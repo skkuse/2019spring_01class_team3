@@ -8,3 +8,6 @@ def home(request):
 
 def login(request):
     return render(request, 'login.html')
+
+def register(requeset):
+    return render(request, 'register.html')
