@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- 위에 넘기는 이미지 -->
-<div id="carouselExampleIndicators" class="carousel slide my-4" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide mt-5" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
     <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -31,18 +31,19 @@
 
 
 <!-- 할인 많이 하는 상품 top N개 -->
-<div class="row">
+<div class="row mt-4">
 
   {% for p in products %}
   <div class="col-lg-4 col-md-6 mb-4">
     <div class="card h-100">
-      <a href="#"><img class="card-img-top" src="media/img/products/{{p.pcode}}.jpg" alt=""></a>
+      <a href="{% url 'detail' pcode=p.pcode %}">
+        <img class="card-img-top" src="/media/img/products/{{p.pcode}}.jpg" alt="">
+      </a>
       <div class="card-body">
         <p class="card-title">
-          <a href="#">{{p.pname}}</a>
+          <a href="{% url 'detail' pcode=p.pcode %}" style="color: black;">{{p.pname}}</a>
         </p>
-        <p class="card-text">{{p.brand}}</p>
-        <span class="origin-price">{{p.price}}</span> <span class="disc-price">{{p.price}}</span>
+        <p class="card-text other-brands-name">{{p.brand}}</p>
       </div>
     </div>
   </div>

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Portfolio Item Row -->
+<div class="row mt-5">
+    <div class="col-md-8">
+        <img class="img-fluid" src="/media/img/products/{{p.pcode}}.jpg" alt="">
+    </div>
+
+    <div class="col-md-4">
+        <h5 class="my-3">{{p.pname}}</h5>
+        <p class="other-brands-name">{{p.brand}}</p>
+
+        <table>
+            {% for product in products %}
+            <tr>
+                <td class="td-country">
+                    {{ product.cid }}
+                </td>
+                <td>
+                    {{ product.price }}원 <a href={{product.url}} target="_blank"><i class='far fa-paper-plane'></i></a>
+                    <i class='far fa-heart'></i>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+<!-- /.row -->
+
+<!-- Related Projects Row -->
+<h5 class="mt-5">Related Produts</h5>
+
+<div class="row">
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+</div>
+<!-- /.row -->
+{% endblock %}
