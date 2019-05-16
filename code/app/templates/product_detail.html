@@ -2,28 +2,37 @@
 {% block content %}
 
 <!-- Portfolio Item Row -->
-<div class="row my-4">
+<div class="row mt-5">
     <div class="col-md-8">
         <img class="img-fluid" src="/media/img/products/{{p.pcode}}.jpg" alt="">
     </div>
 
     <div class="col-md-4">
-        <h3 class="my-3">{{p.pname}}</h3>
-        <p>{{p.brand}}</p>
-        <ul>
+        <h5 class="my-3">{{p.pname}}</h5>
+        <p class="other-brands-name">{{p.brand}}</p>
+
+        <table>
             {% for product in products %}
-            <li>
-                {{ product.cid }} {{ product.price }}
-            </li>
+            <tr>
+                <td class="td-country">
+                    {{ product.cid }}
+                </td>
+                <td>
+                    {{ product.price }}원 <a href={{product.url}} target="_blank"><i class='far fa-paper-plane'></i></a>
+                    <i class='far fa-heart'></i>
+
+                </td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
+
     </div>
 
 </div>
 <!-- /.row -->
 
 <!-- Related Projects Row -->
-<h3 class="my-4">Related Projects</h3>
+<h5 class="mt-5">Related Produts</h5>
 
 <div class="row">
 
