@@ -4,7 +4,7 @@ from django.db import models
 class Country(models.Model):
     cid = models.IntegerField(primary_key=True)
     cname = models.TextField()
-    short_cmane = models.TextField()
+    short_cname = models.TextField()
 
     def __str__(self):
         return str(self.cid) + ", " + self.cname
@@ -22,3 +22,12 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.pid) + ", " + self.pname + ", " + str(self.cid)
+
+class Favorites(models.Model) :
+
+    fid = models.IntegerField(primary_key=True)
+    pid = models.ForeignKey(Product, on_delete = models.CASCADE)
+    #uid = 유저의 uid를 담아서 가야 하는데..
+
+    def __str__(self) :
+        return str(self.fid) + ", "+ self.pid+", "+ str(self.uid)

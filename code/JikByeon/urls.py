@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     re_path('^$', user_views.home, name="home"),
     re_path('^register/$', user_views.register, name='register'),
+    re_path('^favorites/$', user_views.view_favorites, name='favorites'),
     path('', include('app.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -30,3 +30,6 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+def view_favorites(request) :
+    return render(request, 'favorites.html')

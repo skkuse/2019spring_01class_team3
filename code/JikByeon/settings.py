@@ -32,8 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
+    'django.contrib.auth', #Core authentication framework and its default models.
+    'django.contrib.contenttypes', #Django content type system (allows permissions to be associated with models).
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
