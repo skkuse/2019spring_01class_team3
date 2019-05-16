@@ -39,7 +39,7 @@
       <a href="#"><img class="card-img-top" src="media/img/products/{{p.pcode}}.jpg" alt=""></a>
       <div class="card-body">
         <p class="card-title">
-          <a href="#">{{p.pname}}</a>
+          <a href="{% url 'detail' pcode=p.pcode %}">{{p.pname}}</a>
         </p>
         <p class="card-text">{{p.brand}}</p>
         <span class="origin-price">{{p.price}}</span> <span class="disc-price">{{p.price}}</span>

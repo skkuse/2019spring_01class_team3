@@ -3,13 +3,20 @@ from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import *
 
+
+
 # from forms import UserRegisterForm
 
 # Create your views here.
 
 
 def home(request):
-    products = Product.objects.all()
+    distinct_products = Product.objects.values('pcode').distinct()
+    products = []
+
+    for p in distinct_products:
+        products.append(Product.objects.filter(pcode = p['pcode'])[0])
+
 
     return render(request, 'index.html', {'products':products})
 
@@ -30,3 +37,13 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+def detail(request, pcode):
+    if request.method == 'GET':
+        products = Product.objects.filter(pcode = pcode)
+        print("-----products: ",products)
+        
+        p = products[0]
+        
+    
+        return render(request, 'product_detail.html', {'products':products, 'p': p})
