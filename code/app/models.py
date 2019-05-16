@@ -7,7 +7,7 @@ class Country(models.Model):
     short_cmane = models.TextField()
 
     def __str__(self):
-        return self.cname
+        return str(self.cid) + ", " + self.cname
 
 
 class Product(models.Model):

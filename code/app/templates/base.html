@@ -12,13 +12,10 @@
     <title>직구변화구, 직변</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Pen+Script|Courgette" rel="stylesheet">
-    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.7.0/css/all.css'
-        integrity='sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ' crossorigin='anonymous'>
+    <link href="https://fonts.googleapis.com/css?family=Nanum+Gothic|Nanum+Pen+Script" rel="stylesheet">
+
 
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
-    <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
-
     <script src="{% static 'js/index.js' %}"></script>
 
 </head>
@@ -67,8 +64,10 @@
                 </table>
 
                 <div class="list-group" id="list-cat">
-                    <a href="#" class="list-group-item">Women's wear</a>
-                    <a href="#" class="list-group-item">Men's wear</a>
+                    <a href="#" class="list-group-item">Outer</a>
+                    <a href="#" class="list-group-item">Top</a>
+                    <a href="#" class="list-group-item">Onepiece</a>
+                    <a href="#" class="list-group-item">Bottom</a>
                     <a href="#" class="list-group-item">Bag</a>
                     <a href="#" class="list-group-item">Shoes</a>
                 </div>
@@ -84,9 +83,9 @@
 
             <div class="col-lg-9">
                 {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-{{message.tags}} my-5">{{message}}</div>
-                {% endfor %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{message.tags}} my-5">{{message}}</div>
+                    {% endfor %}
                 {% endif %}
                 {% block content %}
                 {% endblock %}
@@ -99,7 +98,7 @@
 
     <!-- Footer -->
     <footer class="py-5 bg-dark ">
-        <p class="m-0 text-center text-white">직구 가격 비교 서비스, <span class="brand-name" style="font-size: 30px">직변</span>
+        <p class="m-0 text-center text-white">직구 가격 비교 서비스, <span class="brand-name" style="font-size: larger">직변</span>
         </p>
         <!-- /.container -->
     </footer>
