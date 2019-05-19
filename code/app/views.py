@@ -32,4 +32,5 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def view_favorites(request) :
-    return render(request, 'favorites.html')
+    favorites = Favorite.objects.filter(uid=100)
+    return render(request, 'favorites.html',{'favorites':favorites})

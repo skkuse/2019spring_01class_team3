@@ -23,11 +23,13 @@ class Product(models.Model):
     def __str__(self):
         return str(self.pid) + ", " + self.pname + ", " + str(self.cid)
 
-class Favorites(models.Model) :
-
+class Favorite (models.Model) :
     fid = models.IntegerField(primary_key=True)
     pid = models.ForeignKey(Product, on_delete = models.CASCADE)
-    #uid = 유저의 uid를 담아서 가야 하는데..
+    uid = models.IntegerField()
+
+    def get_pid(self) :
+        return self.pid
 
     def __str__(self) :
-        return str(self.fid) + ", "+ self.pid+", "+ str(self.uid)
+        return str(self.fid) + ", "+ str(self.pid)

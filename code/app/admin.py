@@ -7,4 +7,4 @@ from .models import *
 
 admin.site.register(Product)
 admin.site.register(Country)
-admin.site.register(Favorites)
+admin.site.register(Favorite)

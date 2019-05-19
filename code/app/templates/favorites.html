@@ -6,27 +6,26 @@
     <div class="card-body">
         <h5 class="card-title text-center">Favorites</h5>
 
-        <!--
-        <form class="form-signin">
-            <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-                <label for="inputEmail">Email address</label>
-            </div>
 
-            <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-                <label for="inputPassword">Password</label>
-            </div>
+        <!-- row-->
+        <div class="row">
 
-            <div class="custom-control custom-checkbox mb-3">
-                <input type="checkbox" class="custom-control-input" id="customCheck1">
-                <label class="custom-control-label" for="customCheck1">Remember password</label>
+            {% for f in favorites %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <a href="#"><img class="card-img-top" src="media/img/products/{{f.pid.pcode}}.jpg" alt=""></a>
+                    <div class="card-body">
+                        <p class="card-title">
+                            <a href="#">{{f.pid.pname}}</a>
+                        </p>
+                        <p class="card-text">{{f.pid.brand}}</p>
+                        <span class="origin-price">{{f.pid.price}}</span> <span class="disc-price">{{f.pid.price}}</span>
+                    </div>
+                </div>
             </div>
-            <button class="btn btn-lg btn-primary btn-block text-uppercase bg-dark" type="submit">Sign in</button>
-            <hr class="my-4">
-
-        </form>
-        -->
+            {% endfor %}
+        </div>
+        <!-- /.row -->
     </div>
 </div>
 
