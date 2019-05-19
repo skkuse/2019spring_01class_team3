@@ -4,13 +4,8 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-<<<<<<< HEAD
-
-
-=======
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
->>>>>>> GY
 # from forms import UserRegisterForm
 
 # Create your views here.
@@ -50,29 +45,34 @@ def detail(request, pcode):
 
         day = str(datetime.today().year) + '%02d'%datetime.today().month + str(datetime.today().day)
 
-<<<<<<< HEAD
         
-=======
-
->>>>>>> GY
         url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01'%day
 
-        ex_rate_res = req.get(url).json()
+        ex_rate_response = req.get(url)
+        ex_rate_json = ex_rate_response.json()
+
+        if str(ex_rate_response) != '<Response [200]>' or len(ex_rate_json) == 0:
+            day = str(datetime.today().year) + '%02d'%datetime.today().month + str(datetime.today().day - 2)
+
+            url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01'%day
+
+            ex_rate_response = req.get(url)
+            ex_rate_json = ex_rate_response.json()
+        
+        
         ex_rate = {}
+        
         # DEAL_BAS_R
-        for ex in ex_rate_res:
+        for ex in ex_rate_json:
             if ex['cur_unit'] == 'USD':
                 ex_rate['미국'] = float(ex['deal_bas_r'].replace(',',''))
             elif ex['cur_unit'] == 'EUR':
                 ex_rate['프랑스'] = float(ex['deal_bas_r'].replace(',',''))
             elif ex['cur_unit'] == 'JPY(100)':
                 ex_rate['일본'] = float(ex['deal_bas_r'].replace(',','')) / 100
-<<<<<<< HEAD
         
-=======
-
->>>>>>> GY
         p = products[0]
+        
 
         for product in products:
             if str(product.cid) != '대한민국':
@@ -80,8 +80,7 @@ def detail(request, pcode):
             product.price = "{:,}".format(product.price)
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
-<<<<<<< HEAD
-=======
+
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
@@ -102,4 +101,3 @@ def searchList(request):
     except EnptyPage:
         queryset = paginator.page(paginator.num_pages)
     return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})
->>>>>>> GY

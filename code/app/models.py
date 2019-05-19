@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Country(models.Model):
     cid = models.IntegerField(primary_key=True)
     cname = models.TextField()
-    short_cmane = models.TextField()
+    short_cname = models.TextField()
 
     def __str__(self):
         return self.cname
