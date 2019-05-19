@@ -62,7 +62,12 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def view_favorites(request) :
-    favorites = Favorite.objects.filter(uid=100)
+
+    favorites = Favorite.objects.filter(uid = 100)
+
+        ##user 성공하면...
+        #favorites = Favorite.objects.filter(uid=request.user)
+
     return render(request, 'favorites.html',{'favorites':favorites})
 
 def delFavorite(request, del_fid):
@@ -70,6 +75,24 @@ def delFavorite(request, del_fid):
         del_favorite = Favorite.objects.get(fid = del_fid)
         del_favorite.delete()
         return view_favorites(request)
+
+
+def addFavorite(request, add_pid):
+    if request.method == 'GET' :
+        product = Product.objects.get(pid = add_pid)
+        favorite = Favorite(pid=product, uid=100)
+        favorite.save()
+        return view_favorites(request)
+
+        #User 연동 성공하면...
+        '''
+        user = request.user
+        product = Product.objects.get(pid = add_pid)
+        favorite = Favorite(pid=product, uid=user)
+        favorite.save()
+        return detail(request, product.pcode) #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
+        '''
+
 
 def detail(request, pcode):
     if request.method == 'GET':

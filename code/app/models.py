@@ -30,6 +30,9 @@ class Favorite (models.Model) :
     pid = models.ForeignKey(Product, on_delete = models.CASCADE)
     uid = models.IntegerField()
 
+    #USER 연동 성공하면...
+    #ForeignKey(User, on_delete = models.CASCADE)
+
     def get_pid(self) :
         return self.pid
 
