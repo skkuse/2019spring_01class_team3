@@ -57,10 +57,10 @@ def detail(request, pcode):
 
             ex_rate_response = req.get(url)
             ex_rate_json = ex_rate_response.json()
-        
-        
+
+
         ex_rate = {}
-        
+
         # DEAL_BAS_R
         for ex in ex_rate_json:
             if ex['cur_unit'] == 'USD':
@@ -71,7 +71,7 @@ def detail(request, pcode):
                 ex_rate['일본'] = float(ex['deal_bas_r'].replace(',','')) / 100
 
         p = products[0]
-        
+
 
         for product in products:
             if str(product.cid) != '대한민국':
@@ -89,7 +89,9 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
+
     paginator = Paginator(queryset_list, 10)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
