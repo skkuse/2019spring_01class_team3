@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+{% for q in products %}
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card h-100">
+    <a href="{% url 'detail' pcode=q.pcode %}">
+      <img class="card-img-top" src="/media/img/products/{{q.pcode}}.jpg" alt="">
+    </a>
+    <div class="card-body">
+      <p class="card-title">
+        <a href="{% url 'detail' pcode=q.pcode %}" style="color: black;">{{q.pname}}</a>
+      </p>
+      <p class="card-text other-brands-name">{{q.brand}}</p>
+    </div>
+  </div>
+</div>
+{% endfor %}
+{% endblock content %}
