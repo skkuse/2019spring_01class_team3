@@ -9,6 +9,7 @@ from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_protect
 
 
 def home(request):
@@ -20,25 +21,31 @@ def home(request):
 
     return render(request, 'index.html', {'products': products})
 
-
+@csrf_protect
 def login(request):
     if request.method == "POST":
-        email = request.POST['email']
-        password = request.POST['password']
-        user = auth.authnticate(request, email=email, password = password)
+        email = request.POST.getlist('email')[0]
+        
+        password = request.POST.getlist('password')[0]
+        user = auth.authenticate(request, email=email, password = password)
+        user.is_active = True
+
         if user is not None:
+            print("not none")
             auth.login(request, user)
             return redirect('home')
         else:
+            print("none")
             return render(request, 'login.html', {'error': 'email or password is incorrect'})
     else:
         return render(request, 'login.html')
 
 def logout(request):
-    if request.method == 'POST':
-        auth.logout(request)
-        return redirect('home')
-    return render(request, 'logout.html')
+    auth.logout(request)
+    return render(request, 'index.html')
+    # if request.method == 'POST':
+    #     return redirect('home')
+    # return render(request, 'logout.html')
 
 
 def register(request):
