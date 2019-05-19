@@ -13,16 +13,17 @@
             {% for f in favorites %}
             <div class="col-lg-4 col-md-6 mb-4">
                 <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="media/img/products/{{f.pid.pcode}}.jpg" alt=""></a>
-                    <div class="card-body">
+                    <a href="{% url 'detail' pcode=f.pid.pcode %}">
+                        <img class="card-img-top" src="/media/img/products/{{f.pid.pcode}}.jpg" alt="">
+                    </a>                    <div class="card-body">
                         <p class="card-title">
-                            <a href="#">{{f.pid.pname}}</a>
+                            <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
                         </p>
                         <p class="card-text">{{f.pid.brand}}</p>
                         <span class="origin-price">{{f.pid.price}}</span> <span class="disc-price">{{f.pid.price}}</span>
 
                     </div>
-                    <button class="btn btn-outline-dark" class="btn btn-outline-dark"  type="submit">Delete</button>
+                    <a href="{% url 'delFavorite' del_fid=f.fid %}" class="btn btn-outline-dark" role="button">Delete</a>
                     <a href="{{f.pid.url}}" class="btn btn-outline-dark" role="button">Site</a>
 
                 </div>
