@@ -21,7 +21,7 @@ def home(request):
 
     return render(request, 'index.html', {'products': products})
 
-
+@csrf_protect
 def login(request):
     if request.method == "POST":
         email = request.POST.getlist('email')[0]
