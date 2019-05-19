@@ -8,5 +8,10 @@ urlpatterns = [
     re_path('^admin/', admin.site.urls),
     re_path('^login/$', views.login, name="login"),
     re_path('^detail/(?P<pcode>.*)$', views.detail, name="detail"),
+<<<<<<< HEAD
 ]
+=======
+    re_path('^searchList/$', views.searchList, name="searchList"),
+>>>>>>> GY
 
+]
