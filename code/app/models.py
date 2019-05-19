@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+
 
 # Create your models here.
 class Country(models.Model):
@@ -7,7 +9,7 @@ class Country(models.Model):
     short_cname = models.TextField()
 
     def __str__(self):
-        return str(self.cid) + ", " + self.cname
+        return self.cname
 
 
 class Product(models.Model):
