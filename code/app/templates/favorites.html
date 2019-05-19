@@ -20,7 +20,11 @@
                         </p>
                         <p class="card-text">{{f.pid.brand}}</p>
                         <span class="origin-price">{{f.pid.price}}</span> <span class="disc-price">{{f.pid.price}}</span>
+
                     </div>
+                    <button class="btn btn-outline-dark" class="btn btn-outline-dark"  type="submit">Delete</button>
+                    <a href="{{f.pid.url}}" class="btn btn-outline-dark" role="button">Site</a>
+
                 </div>
             </div>
             {% endfor %}
