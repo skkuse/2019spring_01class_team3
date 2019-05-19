@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('cid', models.IntegerField(primary_key=True, serialize=False)),
                 ('cname', models.TextField()),
-                ('short_cname', models.TextField()),
+                ('short_cmane', models.TextField()),
             ],
         ),
         migrations.CreateModel(

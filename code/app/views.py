@@ -21,7 +21,7 @@ def home(request):
 
     return render(request, 'index.html', {'products': products})
 
-@csrf_protect
+
 def login(request):
     if request.method == "POST":
         email = request.POST.getlist('email')[0]
@@ -155,3 +155,5 @@ def searchList(request):
     except EnptyPage:
         queryset = paginator.page(paginator.num_pages)
     return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})
+
+
