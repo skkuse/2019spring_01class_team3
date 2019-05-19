@@ -4,7 +4,7 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-
+from django.contrib import auth
 
 # from forms import UserRegisterForm
 
@@ -22,7 +22,23 @@ def home(request):
 
 
 def login(request):
-    return render(request, 'login.html')
+    if request.method == "POST":
+        email = request.POST['email']
+        password = request.POST['password']
+        user = auth.authnticate(request, email=email, password = password)
+        if user is not None:
+            auth.login(request, user)
+            return redirect('home')
+        else:
+            return render(request, 'login.html', {'error': 'email or password is incorrect'})
+    else:
+        return render(request, 'login.html')
+
+def logout(request):
+    if request.method == 'POST':
+        auth.logout(request)
+        return redirect('home')
+    return render(request, 'logout.html')
 
 
 def register(request):

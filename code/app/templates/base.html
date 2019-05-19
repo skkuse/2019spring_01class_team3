@@ -42,12 +42,21 @@
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign Out</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Welcome, {{user.get_username}}</a>
+                    </li>
+                    {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Sign in</a>
                     </li>
-                    <li class="nav-item">
+                      <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Sign up</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
