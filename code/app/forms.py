@@ -10,5 +10,7 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+
+
 #class SearchForm(forms):
 #    word = forms.Charfield(label='Search Word')
