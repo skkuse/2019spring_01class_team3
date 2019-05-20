@@ -13,6 +13,20 @@
         <a href="{% url 'detail' pcode=q.pcode %}" style="color: black;">{{q.pname}}</a>
       </p>
       <p class="card-text other-brands-name">{{q.brand}}</p>
+      <table>
+          {% for q in products %}
+          <tr>
+              <td class="td-country">
+                  {{ q.cid }}
+              </td>
+              <td>
+                  {{ q.price }}원 <a href={{product.url}} target="_blank"></a>
+                  
+
+              </td>
+          </tr>
+          {% endfor %}
+      </table>
     </div>
   </div>
 </div>

@@ -4,11 +4,12 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-
+from django.contrib import auth
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.csrf import csrf_protect
 
 
 def home(request):
@@ -20,9 +21,31 @@ def home(request):
 
     return render(request, 'index.html', {'products': products})
 
-
+@csrf_protect
 def login(request):
-    return render(request, 'login.html')
+    if request.method == "POST":
+        email = request.POST.getlist('email')[0]
+        
+        password = request.POST.getlist('password')[0]
+        user = auth.authenticate(request, email=email, password = password)
+        user.is_active = True
+
+        if user is not None:
+            print("not none")
+            auth.login(request, user)
+            return redirect('home')
+        else:
+            print("none")
+            return render(request, 'login.html', {'error': 'email or password is incorrect'})
+    else:
+        return render(request, 'login.html')
+
+def logout(request):
+    auth.logout(request)
+    return render(request, 'index.html')
+    # if request.method == 'POST':
+    #     return redirect('home')
+    # return render(request, 'logout.html')
 
 
 def register(request):
@@ -57,10 +80,10 @@ def detail(request, pcode):
 
             ex_rate_response = req.get(url)
             ex_rate_json = ex_rate_response.json()
-        
-        
+
+
         ex_rate = {}
-        
+
         # DEAL_BAS_R
         for ex in ex_rate_json:
             if ex['cur_unit'] == 'USD':
@@ -71,7 +94,7 @@ def detail(request, pcode):
                 ex_rate['일본'] = float(ex['deal_bas_r'].replace(',','')) / 100
 
         p = products[0]
-        
+
 
         for product in products:
             if str(product.cid) != '대한민국':
@@ -89,7 +112,9 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
+
     paginator = Paginator(queryset_list, 10)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
