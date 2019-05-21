@@ -112,8 +112,6 @@ def view_favorites(request):
     # API 추가
     ex_rate = getExRate()
     for f in favorites:
-        print(f)
-        print("price",f.pid.price)
         if str(f.pid.cid) != '대한민국':
             f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid)] * int(f.pid.price)))
         

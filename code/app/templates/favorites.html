@@ -27,8 +27,16 @@
                 <p class="disc-price mb-0">\{{f.pid.price}}</p>
 
             </div>
-            <a href="{% url 'delFavorite' del_fid=f.fid %}" class="btn btn-outline-dark" role="button">Delete</a>
-            <a href="{{f.pid.url}}" class="btn btn-outline-dark" role="button">Site</a>
+            <table>
+                <tr>
+                    <td style="text-align: right">
+                        <a href="{% url 'delFavorite' del_fid=f.fid %}"><i class='far fa-trash-alt' style='font-size:18px'></i></a>
+                    </td>
+                    <td style="text-align: left">
+                        <a href="{{f.pid.url}}" target="_blank"><i class='far fa-paper-plane'></i></a>
+                    </td>
+                </tr>
+            </table>
 
         </div>
     </div>
