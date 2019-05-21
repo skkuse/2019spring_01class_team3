@@ -5,7 +5,7 @@ from .models import *
 import requests as req
 from datetime import datetime
 from django.contrib.auth.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
@@ -23,7 +23,7 @@ def home(request):
     return render(request, 'index.html', {'products': products})
 
 @csrf_protect
-def SignIn(request):
+def login_request(request):
     if request.method == "POST":
         input_email = request.POST.getlist('email')
         input_password = request.POST.getlist('password')
@@ -42,9 +42,9 @@ def SignIn(request):
     else:
         return render(request, 'login.html')
 
-def SignOut(request):
-    # logout(request)
-    return render(request, 'index.html')
+def logout_request(request):
+    logout(request)
+    return render(request, 'logout.html')
     # if request.method == 'POST':
     #     return redirect('home')
     # return render(request, 'logout.html')
@@ -165,6 +165,6 @@ def searchList(request):
         queryset = paginator.page(page)
     except PageNotAnInteger:
         queryset = paginator.page(1)
-    except EnptyPage:
+    except EmptyPage:
         queryset = paginator.page(paginator.num_pages)
     return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})

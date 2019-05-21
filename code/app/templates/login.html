@@ -1,30 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-
-<div class="card card-signin mt-5">
-  <div class="card-body">
-    <h5 class="card-title text-center">Sign In</h5>
-    <form class="form-signin" method="POST">
-      {% csrf_token %}
-      <div class="form-label-group">
-        <input type="name" name="name" id="inputName" class="form-control" placeholder="Name" required autofocus>
-        <label for="inputName">User name</label>
-      </div>
-
-      <div class="form-label-group">
-        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
-        <label for="inputPassword">Password</label>
-      </div>
-
-      <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="customCheck1">
-        <label class="custom-control-label" for="customCheck1">Remember password</label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block text-uppercase bg-dark" type="submit">Sign in</button>
-      <hr class="my-4">
-
-    </form>
-  </div>
-</div>
+{% load crispy_forms_tags %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Need An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
 
 {% endblock content %}
