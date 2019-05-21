@@ -25,7 +25,7 @@ def home(request):
 def login(request):
     if request.method == "POST":
         email = request.POST.getlist('email')[0]
-        
+
         password = request.POST.getlist('password')[0]
         user = auth.authenticate(request, email=email, password = password)
         user.is_active = True
@@ -112,7 +112,6 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
-    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
 
     paginator = Paginator(queryset_list, 10)
