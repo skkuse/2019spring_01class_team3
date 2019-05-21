@@ -135,7 +135,6 @@ def detail(request, pcode):
 
         p = products[0]
 
-
         for product in products:
             if str(product.cid) != '대한민국':
                 product.price = int(int(product.price) * ex_rate[str(product.cid)])
@@ -163,6 +162,6 @@ def searchList(request):
         queryset = paginator.page(page)
     except PageNotAnInteger:
         queryset = paginator.page(1)
-    except EnptyPage:
+    except EmptyPage:
         queryset = paginator.page(paginator.num_pages)
     return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})
