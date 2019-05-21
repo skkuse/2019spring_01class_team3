@@ -60,10 +60,6 @@ def register(request):
             return redirect('home')
 
     else:
-
-    # tests
-
-
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
@@ -98,7 +94,7 @@ def addFavorite(request, add_pid):
         product = Product.objects.get(pid = add_pid)
         favorite = Favorite(pid=product, uid=user)
         favorite.save()
-        return view_favorites(request)
+        return detail (request, product.pcode)
 
         #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
@@ -145,8 +141,6 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
-
-
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
@@ -156,6 +150,7 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
 
     paginator = Paginator(queryset_list, 10)
