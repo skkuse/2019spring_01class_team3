@@ -28,6 +28,8 @@ def login(request):
 
         password = request.POST.getlist('password')[0]
         user = auth.authenticate(request, email=email, password = password)
+
+        #user.is_active
         user.is_active = True
 
         if user is not None:
@@ -96,7 +98,7 @@ def addFavorite(request, add_pid):
         product = Product.objects.get(pid = add_pid)
         favorite = Favorite(pid=product, uid=user)
         favorite.save()
-        return view_favorites(request)
+        return detail (request, product.pcode)
 
         #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
