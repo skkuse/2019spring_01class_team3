@@ -24,3 +24,20 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.pid) + ", " + self.pname + ", " + str(self.cid)
+
+
+class Favorite (models.Model) :
+    fid = models.IntegerField(primary_key=True)
+    pid = models.ForeignKey(Product, on_delete = models.CASCADE)
+    #uid = models.IntegerField()
+
+    #USER 연동 성공하면...
+    uid = models.ForeignKey(User, on_delete = models.CASCADE)
+
+    def get_pid(self) :
+        return self.pid
+
+    def __str__(self) :
+        return str(self.fid) + ", "+ str(self.pid)
+
+
