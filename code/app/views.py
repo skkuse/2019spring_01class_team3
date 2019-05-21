@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import *
-#import requests as req
+import requests as req
 from datetime import datetime
 from django.contrib import auth
 from django.db.models.query import QuerySet
@@ -28,7 +28,10 @@ def login(request):
 
         password = request.POST.getlist('password')[0]
         user = auth.authenticate(request, email=email, password = password)
+
+        #여기서 자꾸 에러 나는데...
         user.is_active = True
+
 
         if user is not None:
             print("not none")
@@ -62,11 +65,11 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 def view_favorites(request) :
-
-    favorites = Favorite.objects.filter(uid = 100)
+    #user login 실패시..
+    #favorites = Favorite.objects.filter(uid = 100)
 
         ##user 성공하면...
-        #favorites = Favorite.objects.filter(uid=request.user)
+    favorites = Favorite.objects.filter(uid=request.user)
 
     return render(request, 'favorites.html',{'favorites':favorites})
 
@@ -79,19 +82,23 @@ def delFavorite(request, del_fid):
 
 def addFavorite(request, add_pid):
     if request.method == 'GET' :
+        '''
         product = Product.objects.get(pid = add_pid)
         favorite = Favorite(pid=product, uid=100)
         favorite.save()
         return view_favorites(request)
+        '''
 
         #User 연동 성공하면...
-        '''
+
         user = request.user
         product = Product.objects.get(pid = add_pid)
         favorite = Favorite(pid=product, uid=user)
         favorite.save()
-        return detail(request, product.pcode) #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
-        '''
+        return view_favorites(request)
+
+        #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
+
 
 
 def detail(request, pcode):
@@ -138,11 +145,17 @@ def detail(request, pcode):
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
+
     queryset_list = Product.objects.all()
+
     if query:
         queryset_list = Product.objects.filter(
             pname__icontains=query
             ).distinct()
+
+
+
+
 
     qu = queryset_list[0]
     paginator = Paginator(queryset_list, 10)
