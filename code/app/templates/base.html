@@ -43,11 +43,15 @@
                         </a>
                     </li>
                     {% if user.is_authenticated %}
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Welcome, {{user.get_username}}</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'favorites' %}">My Favorites</a>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Welcome, {{user.get_username}}</a>
+                    </li>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -57,6 +61,8 @@
                         <a class="nav-link" href="{% url 'register' %}">Sign up</a>
                     </li>
                     {% endif %}
+
+
                 </ul>
                 <form class="form-inline my-2 my-lg-0" role="search" action = '{% url 'searchList' %}'>
                   <input class="form-control mr-sm-2" type="search" name = 'q' placeholder="Search">
@@ -80,8 +86,7 @@
                 </table>
 
                 <div class="list-group" id="list-cat">
-                    <a href="#" class="list-group-item">Women's wear</a>
-                    <a href="#" class="list-group-item">Men's wear</a>
+                    <a href="#" class="list-group-item">Ready to Wear</a>
                     <a href="#" class="list-group-item">Bag</a>
                     <a href="#" class="list-group-item">Shoes</a>
                 </div>
