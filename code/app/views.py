@@ -28,10 +28,7 @@ def login(request):
 
         password = request.POST.getlist('password')[0]
         user = auth.authenticate(request, email=email, password = password)
-
-        #여기서 자꾸 에러 나는데...
         user.is_active = True
-
 
         if user is not None:
             print("not none")
@@ -142,22 +139,20 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
+
+
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
-
     queryset_list = Product.objects.all()
-
     if query:
         queryset_list = Product.objects.filter(
             pname__icontains=query
             ).distinct()
 
-
-
-
-
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
+
     paginator = Paginator(queryset_list, 10)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
@@ -168,5 +163,3 @@ def searchList(request):
     except EnptyPage:
         queryset = paginator.page(paginator.num_pages)
     return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})
-
-
