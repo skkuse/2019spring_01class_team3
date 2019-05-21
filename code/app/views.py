@@ -58,6 +58,10 @@ def register(request):
             return redirect('home')
 
     else:
+
+    # tests
+
+
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
