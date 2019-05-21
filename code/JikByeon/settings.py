@@ -56,6 +56,9 @@ AUTHENTICATION_BACKENDS = (
 
 ROOT_URLCONF = 'JikByeon.urls'
 
+# Redirect to home URL after login
+LOGIN_REDIRECT_URL = 'home'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -129,3 +132,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
