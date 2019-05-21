@@ -3,7 +3,7 @@
 
 
 
-<div class="col-lg-4 col-md-6 mb-4">
+<div class="col-lg-4 col-md-6 mb-4 my-5">
   <div class="card h-100">
     <a href="{% url 'detail' pcode=q.pcode %}">
       <img class="card-img-top" src="/media/img/products/{{q.pcode}}.jpg" alt="">
@@ -13,15 +13,15 @@
         <a href="{% url 'detail' pcode=q.pcode %}" style="color: black;">{{q.pname}}</a>
       </p>
       <p class="card-text other-brands-name">{{q.brand}}</p>
-      <table>
+      <table class="searchlist-table">
 
           {% for q in products %}
           <tr>
               <td class="td-country">
-                  {{ q.cid }}
+                  {{ q.cid.short_cname }}
               </td>
               <td>
-                  {{ q.price }}원 <a href={{product.url}} target="_blank"></a>
+                  {{ q.price }} {{ q.cid.currency }} <a href={{product.url}} target="_blank"></a>
 
 
               </td>
