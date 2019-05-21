@@ -4,7 +4,8 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-from django.contrib import auth
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
@@ -22,19 +23,18 @@ def home(request):
     return render(request, 'index.html', {'products': products})
 
 @csrf_protect
-def login(request):
+def SignIn(request):
     if request.method == "POST":
-        email = request.POST.getlist('email')[0]
-
-        password = request.POST.getlist('password')[0]
-        user = auth.authenticate(request, email=email, password = password)
-
-        #user.is_active
-        user.is_active = True
+        input_email = request.POST.getlist('email')
+        input_password = request.POST.getlist('password')
+        print(input_email)
+        print(input_password)
+        user = authenticate(email=input_email, password = input_password)
+        #user.is_active = True
 
         if user is not None:
             print("not none")
-            auth.login(request, user)
+            login(request, user)
             return redirect('home')
         else:
             print("none")
@@ -42,8 +42,8 @@ def login(request):
     else:
         return render(request, 'login.html')
 
-def logout(request):
-    auth.logout(request)
+def SignOut(request):
+    logout(request)
     return render(request, 'index.html')
     # if request.method == 'POST':
     #     return redirect('home')
@@ -60,10 +60,6 @@ def register(request):
             return redirect('home')
 
     else:
-
-    # tests
-
-
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
 
@@ -145,8 +141,6 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
-
-
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
@@ -156,6 +150,7 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
 
     paginator = Paginator(queryset_list, 10)
