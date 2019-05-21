@@ -99,7 +99,6 @@ def addFavorite(request, add_pid):
         #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
 
-
 def detail(request, pcode):
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
@@ -132,7 +131,6 @@ def detail(request, pcode):
                 ex_rate['일본'] = float(ex['deal_bas_r'].replace(',','')) / 100
 
         p = products[0]
-
 
         for product in products:
             if str(product.cid) != '대한민국':
