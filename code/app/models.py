@@ -29,6 +29,7 @@ class Product(models.Model):
 class Favorite (models.Model) :
     fid = models.IntegerField(primary_key=True)
     pid = models.ForeignKey(Product, on_delete = models.CASCADE)
+    kprice = models.TextField()
     #uid = models.IntegerField()
 
     #USER 연동 성공하면...

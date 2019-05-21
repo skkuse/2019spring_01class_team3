@@ -1,43 +1,41 @@
+{% extends "base.html" %} {% block content %}
 
-{% extends "base.html" %}
-{% block content %}
+<!-- <div class="card card-signin my-5">
+    <div class="card-body"> -->
 
-<div class="card card-signin my-5">
-    <div class="card-body">
-        <h5 class="card-title text-center">Favorites</h5>
+<h3 class="text-center my-5">Favorites</h3>
 
 
-        <!-- row-->
-        <div class="row">
+<!-- row-->
+<div class="row">
 
-            {% for f in favorites %}
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100">
-                    <a href="{% url 'detail' pcode=f.pid.pcode %}">
-                        <img class="card-img-top" src="/media/img/products/{{f.pid.pcode}}.jpg" alt="">
-                    </a>                    <div class="card-body">
-                        <p class="card-title">
-                            <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
-                        </p>
-                        <p class="card-text">{{f.pid.brand}}</p>
+    {% for f in favorites %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <p class="card-brand other-brands-name">{{f.pid.brand}}</p>
+            <a href="{% url 'detail' pcode=f.pid.pcode %}">
+                <img class="card-img-top" src="/media/img/products/{{f.pid.pcode}}.jpg" alt="">
+            </a>
+            <div class="card-body">
+                <p class="card-title">
+                    <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
+                </p>
 
-                        <!--섞이는지 확인하려 넣어둔 항목..추후 삭제-->
-                        <p class="card-text">{{f.uid}}</p>
+                <p class="card-text">{{f.pid.cid.cname}}</p>
 
-                    <p class="card-text">{{f.pid.cid.cname}}</p>
+                <p class="origin-price mb-0">\{{f.kprice}}</p>
+                <p class="disc-price mb-0">\{{f.pid.price}}</p>
 
-                    <span class="origin-price">{{f.pid.price}}</span> <span class="disc-price">{{f.pid.price}}</span>
-
-                    </div>
-                    <a href="{% url 'delFavorite' del_fid=f.fid %}" class="btn btn-outline-dark" role="button">Delete</a>
-                    <a href="{{f.pid.url}}" class="btn btn-outline-dark" role="button">Site</a>
-
-                </div>
             </div>
-            {% endfor %}
+            <a href="{% url 'delFavorite' del_fid=f.fid %}" class="btn btn-outline-dark" role="button">Delete</a>
+            <a href="{{f.pid.url}}" class="btn btn-outline-dark" role="button">Site</a>
+
         </div>
-        <!-- /.row -->
     </div>
+    {% endfor %}
 </div>
+<!-- /.row -->
+<!-- </div>
+</div> -->
 
 {% endblock content %}
