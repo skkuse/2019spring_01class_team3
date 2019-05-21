@@ -2,7 +2,7 @@
 {% block content %}
 
 
-{% for q in products %}
+
 <div class="col-lg-4 col-md-6 mb-4">
   <div class="card h-100">
     <a href="{% url 'detail' pcode=q.pcode %}">
@@ -14,6 +14,10 @@
       </p>
       <p class="card-text other-brands-name">{{q.brand}}</p>
       <table>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 963d6744df53b70e92527fdc51d2dafe6a3e6885
           {% for q in products %}
           <tr>
               <td class="td-country">
@@ -30,5 +34,5 @@
     </div>
   </div>
 </div>
-{% endfor %}
+
 {% endblock content %}

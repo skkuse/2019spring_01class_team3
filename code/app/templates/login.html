@@ -1,17 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="card card-signin my-5">
+<div class="card card-signin mt-5">
   <div class="card-body">
     <h5 class="card-title text-center">Sign In</h5>
-    <form class="form-signin">
+    <form class="form-signin" method="POST">
+      {% csrf_token %}
       <div class="form-label-group">
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-        <label for="inputEmail">Email address</label>
+        <input type="name" name="name" id="inputName" class="form-control" placeholder="Name" required autofocus>
+        <label for="inputName">User name</label>
       </div>
 
       <div class="form-label-group">
-        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
         <label for="inputPassword">Password</label>
       </div>
 
