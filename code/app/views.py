@@ -4,7 +4,8 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-from django.contrib import auth
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
@@ -22,17 +23,18 @@ def home(request):
     return render(request, 'index.html', {'products': products})
 
 @csrf_protect
-def login(request):
+def SignIn(request):
     if request.method == "POST":
-        email = request.POST.getlist('email')[0]
-
-        password = request.POST.getlist('password')[0]
-        user = auth.authenticate(request, email=email, password = password)
-        user.is_active = True
+        input_email = request.POST.getlist('email')
+        input_password = request.POST.getlist('password')
+        print(input_email)
+        print(input_password)
+        user = authenticate(email=input_email, password = input_password)
+        #user.is_active = True
 
         if user is not None:
             print("not none")
-            auth.login(request, user)
+            login(request, user)
             return redirect('home')
         else:
             print("none")
@@ -40,8 +42,8 @@ def login(request):
     else:
         return render(request, 'login.html')
 
-def logout(request):
-    auth.logout(request)
+def SignOut(request):
+    # logout(request)
     return render(request, 'index.html')
     # if request.method == 'POST':
     #     return redirect('home')
