@@ -4,7 +4,8 @@ from .forms import UserRegisterForm
 from .models import *
 import requests as req
 from datetime import datetime
-from django.contrib import auth
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
@@ -22,17 +23,18 @@ def home(request):
     return render(request, 'index.html', {'products': products})
 
 @csrf_protect
-def login(request):
+def login_request(request):
     if request.method == "POST":
-        email = request.POST.getlist('email')[0]
-
-        password = request.POST.getlist('password')[0]
-        user = auth.authenticate(request, email=email, password = password)
-        user.is_active = True
+        input_email = request.POST.getlist('email')
+        input_password = request.POST.getlist('password')
+        print(input_email)
+        print(input_password)
+        user = authenticate(email=input_email, password = input_password)
+        #user.is_active = True
 
         if user is not None:
             print("not none")
-            auth.login(request, user)
+            login(request, user)
             return redirect('home')
         else:
             print("none")
@@ -40,9 +42,9 @@ def login(request):
     else:
         return render(request, 'login.html')
 
-def logout(request):
-    auth.logout(request)
-    return render(request, 'index.html')
+def logout_request(request):
+    logout(request)
+    return render(request, 'logout.html')
     # if request.method == 'POST':
     #     return redirect('home')
     # return render(request, 'logout.html')
@@ -60,6 +62,41 @@ def register(request):
     else:
         form = UserRegisterForm()
     return render(request, 'register.html', {'form': form})
+
+def view_favorites(request) :
+    #user login 실패시..
+    #favorites = Favorite.objects.filter(uid = 100)
+
+        ##user 성공하면...
+    favorites = Favorite.objects.filter(uid=request.user)
+
+    return render(request, 'favorites.html',{'favorites':favorites})
+
+def delFavorite(request, del_fid):
+    if request.method == 'GET' :
+        del_favorite = Favorite.objects.get(fid = del_fid)
+        del_favorite.delete()
+        return view_favorites(request)
+
+
+def addFavorite(request, add_pid):
+    if request.method == 'GET' :
+        '''
+        product = Product.objects.get(pid = add_pid)
+        favorite = Favorite(pid=product, uid=100)
+        favorite.save()
+        return view_favorites(request)
+        '''
+
+        #User 연동 성공하면...
+
+        user = request.user
+        product = Product.objects.get(pid = add_pid)
+        favorite = Favorite(pid=product, uid=user)
+        favorite.save()
+        return detail (request, product.pcode)
+
+        #원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
 
 def detail(request, pcode):
@@ -111,6 +148,7 @@ def searchList(request):
             pname__icontains=query
             ).distinct()
 
+    #queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
     qu = queryset_list[0]
 
     paginator = Paginator(queryset_list, 10)
