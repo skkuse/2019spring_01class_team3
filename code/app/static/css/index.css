@@ -3,6 +3,7 @@
 body {
     padding-top: 56px;
     font-family: 'Nanum Gothic', sans-serif;
+    position: relative;
 }
 
 .brand-name {
@@ -11,6 +12,17 @@ body {
 
 .other-brands-name {
     font-family: 'Courgette', cursive;
+}
+
+.other-brand-logo {
+    height: 25px;
+    width: auto;
+    max-width: 200px;
+}
+
+.container {
+    min-height: 100%;
+    margin: 0 auto;
 }
 
 
@@ -25,10 +37,25 @@ body {
 }
 
 
+/* Footer */
+
+
+/* 
+footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+} */
+
+
 /* 왼쪽 카테고리 or 브랜드 리스트 */
 
 .left-list {
     margin-top: 30px;
+}
+
+.left-list a {
+    font-size: 18px;
 }
 
 #select-cat-brand {
