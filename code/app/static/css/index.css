@@ -1,19 +1,31 @@
 /* 전체 적용 */
+
 body {
     padding-top: 56px;
     font-family: 'Nanum Gothic', sans-serif;
+    position: relative;
+}
 
-  }
-
-  
 .brand-name {
     font-family: 'Nanum Pen Script', cursive;
 }
 
 .other-brands-name {
     font-family: 'Courgette', cursive;
-
 }
+
+.other-brand-logo {
+    height: 25px;
+    width: auto;
+    max-width: 200px;
+}
+
+.container {
+    min-height: 100%;
+    margin: 0 auto;
+}
+
+
 /* Navbar */
 
 .navbar {
@@ -24,9 +36,26 @@ body {
     margin-bottom: 0px;
 }
 
+
+/* Footer */
+
+
+/* 
+footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+} */
+
+
 /* 왼쪽 카테고리 or 브랜드 리스트 */
+
 .left-list {
     margin-top: 30px;
+}
+
+.left-list a {
+    font-size: 18px;
 }
 
 #select-cat-brand {
@@ -44,12 +73,51 @@ body {
     display: none;
 }
 
+
 /* 상품 표시 */
+
 .origin-price {
     text-decoration: line-through;
     font-size: x-small;
     color: #6c757d99;
 }
+
 .disc-price {
     font-size: large;
+}
+
+
+/* Product CARD */
+
+.index-card-body {
+    position: relative;
+    height: 100px;
+    /* padding: 0px; */
+}
+
+.card img {
+    height: 253px;
+    width: 100%;
+    text-align: center;
+}
+
+.card-brand {
+    margin-left: 10px;
+    margin-bottom: 1px;
+    margin-top: 1px;
+    font-size: 18px;
+}
+
+.card-body-container {
+    position: absolute;
+    /* bottom: 10px; */
+}
+
+.card-title {
+    /* margin-bottom: 5px; */
+    font-size: 18px;
+}
+
+.card-title a {
+    color: black;
 }

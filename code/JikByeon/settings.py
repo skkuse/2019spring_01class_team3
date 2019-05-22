@@ -29,14 +29,14 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth', #Core authentication framework and its default models.
-    'django.contrib.contenttypes', #Django content type system (allows permissions to be associated with models).
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app.apps.AppConfig',
     'crispy_forms',
-    
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -121,6 +121,9 @@ USE_L10N = True
 
 USE_TZ = True
 
+
+# DATA Upload
+DATA_UPLOAD_MAX_NUMBER_FIELDS=None
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

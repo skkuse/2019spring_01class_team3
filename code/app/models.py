@@ -24,7 +24,11 @@ class Product(models.Model):
 
     def __str__(self):
         return str(self.id) + ", " + self.pname + ", " + str(self.cid)
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> f1c643f16466317d020c1820b19eabc9c391e634
 class Favorite (models.Model) :
     fid = models.IntegerField(primary_key=True)
     pid = models.ForeignKey(Product, on_delete = models.CASCADE)
@@ -38,4 +42,8 @@ class Favorite (models.Model) :
         return self.pid
 
     def __str__(self) :
+<<<<<<< HEAD
         return str(self.fid) + ", "+ str(self.pid)
+=======
+        return str(self.fid) + ", "+ str(self.pid)
+>>>>>>> f1c643f16466317d020c1820b19eabc9c391e634
