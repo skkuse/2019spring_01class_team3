@@ -106,5 +106,4 @@ venv.bak/
 
 
 # DB
-.sqlite3
 products/
