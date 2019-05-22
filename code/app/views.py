@@ -116,7 +116,7 @@ def view_favorites(request):
         print("price",f.pid.price)
         if str(f.pid.cid) != '대한민국':
             f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid)] * int(f.pid.price)))
-        
+
 
     return render(request, 'favorites.html', {'favorites': favorites})
 
@@ -145,7 +145,7 @@ def addFavorite(request, add_pid):
         kprice = '0'
         for k in ko_pid:
             if str(k.cid) == "대한민국": kprice = "{:,}".format(k.price)
-    
+
         favorite = Favorite(pid=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
@@ -171,22 +171,29 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
-
 def searchList(request):
-    try:
-        query = request.GET.get('q')
-    except:
-        query = None
-    queryset_list = Product.objects.all()
+    try: query = request.GET.get('q')
+    except: query = None
+
+    searchname = Product.objects.all()
+    searchcode = Product.objects.all()
+    search_list = Product.objects.none()
+
     if query:
-        queryset_list = Product.objects.filter(
+        searchname = Product.objects.filter(
             pname__icontains=query
-        ).distinct()
+            ).distinct()
+        searchcode = Product.objects.filter(
+            pcode__icontains=query
+            ).distinct()
+        search_list = searchname | searchcode
+    try:
+        qu = search_list[0]
+    except:
+        qu = None
 
-    # queryset_list = queryset_list.values('pname').distinct()   --> 이걸 치면 가격정보와 이미지가 안나오네요.....
-    qu = queryset_list[0]
 
-    paginator = Paginator(queryset_list, 10)
+    paginator = Paginator(search_list, 10)
     page_request_var = "page"
     page = request.GET.get(page_request_var)
     try:
@@ -195,4 +202,12 @@ def searchList(request):
         queryset = paginator.page(1)
     except EmptyPage:
         queryset = paginator.page(paginator.num_pages)
-    return render(request, 'searchList.html', {'products': queryset_list, 'q': qu})
+
+
+    pname_dict = {}
+    for f in search_list :
+        pname_dict[f.pcode] = f.pname
+
+
+
+    return render(request, 'searchList.html', {'products': search_list, 'q': qu, 'pname_dict' : pname_dict})
