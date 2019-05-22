@@ -16,11 +16,16 @@ from django.views.decorators.csrf import csrf_protect
 
 
 def home(request):
-    distinct_products = Product.objects.values('pcode').distinct()
+    ko_products = Product.objects.filter(cid=1)
+
     products = []
 
-    for p in distinct_products:
-        products.append(Product.objects.filter(pcode=p['pcode'])[0])
+    count = 0
+    for p in ko_products:
+        if count == 20:
+            break
+        count += 1
+        products.append(p)
 
     return render(request, 'index.html', {'products': products})
 
@@ -112,8 +117,8 @@ def view_favorites(request):
     # API 추가
     ex_rate = getExRate()
     for f in favorites:
-        if str(f.pid.cid) != '대한민국':
-            f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid)] * int(f.pid.price)))
+        if int(f.id.cid) != 1:
+            f.id.price = "{:,}".format(int(ex_rate[str(f.id.cid.cname)] * int(f.id.price)))
 
 
     return render(request, 'favorites.html', {'favorites': favorites})
@@ -126,11 +131,11 @@ def delFavorite(request, del_fid):
         return view_favorites(request)
 
 
-def addFavorite(request, add_pid):
+def addFavorite(request, add_id):
     if request.method == 'GET':
         '''
-        product = Product.objects.get(pid = add_pid)
-        favorite = Favorite(pid=product, uid=100)
+        product = Product.objects.get(id = add_id)
+        favorite = Favorite(id=product, uid=100)
         favorite.save()
         return view_favorites(request)
         '''
@@ -138,13 +143,13 @@ def addFavorite(request, add_pid):
         # User 연동 성공하면...
 
         user = request.user
-        product = Product.objects.get(pid=add_pid)
-        ko_pid = Product.objects.filter(pcode=product.pcode) #.filter(cid=0)
+        product = Product.objects.get(id=add_id)
+        ko_id = Product.objects.filter(pcode=product.pcode) #.filter(cid=0)
         kprice = '0'
-        for k in ko_pid:
-            if str(k.cid) == "대한민국": kprice = "{:,}".format(k.price)
+        for k in ko_id:
+            if k.cid == 1: kprice = "{:,}".format(k.price)
 
-        favorite = Favorite(pid=product, uid=user, kprice=kprice)
+        favorite = Favorite(id=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
 
@@ -162,9 +167,9 @@ def detail(request, pcode):
         ex_rate = getExRate()
 
         for product in products:
-            if str(product.cid) != '대한민국':
+            if int(str(product.cid)) != 1:
                 product.price = int(int(product.price) *
-                                    ex_rate[str(product.cid)])
+                                    ex_rate[str(product.cid.cname)])
             product.price = "{:,}".format(product.price)
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})

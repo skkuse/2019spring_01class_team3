@@ -1,10 +1,9 @@
-{% extends "base.html" %}
-{% block content %}
+{% extends "base.html" %} {% block content %}
 
 <!-- Portfolio Item Row -->
 <div class="row mt-5">
     <div class="col-md-7">
-        <img class="img-fluid" src="/media/img/products/{{p.pcode}}.jpg" alt="">
+        <img class="img-fluid" src="/media/img/products/{{p.pcode}}.png" alt="">
     </div>
 
     <div class="col-md-5">
@@ -15,7 +14,7 @@
             {% for product in products %}
             <tr>
                 <td class="td-country">
-                    {{ product.cid }}
+                    {{ product.cid.short_cname }}
                 </td>
                 <td>
                     {{ product.price }}원
@@ -23,7 +22,7 @@
                     <!--Favorite에 추가하는 버튼의 기능 구현
                     views의 add_favorite 함수 실행
                                         -->
-                    <a href="{% url 'addFavorite' add_pid=product.pid %}" target="_blank"><i class='far fa-heart'></i></a>
+                    <a href="{% url 'addFavorite' add_id=product.id %}" target="_blank"><i class='far fa-heart'></i></a>
 
 
                 </td>
