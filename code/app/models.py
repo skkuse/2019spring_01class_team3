@@ -21,9 +21,10 @@ class Product(models.Model):
     price = models.IntegerField()
     url = models.URLField()
     cid = models.ForeignKey(Country, on_delete = models.CASCADE)
+    phit = models.BigIntegerField(default=0)
 
     def __str__(self):
-        return str(self.id) + ", " + self.pname + ", " + str(self.cid)
+        return str(self.id) + ", " + self.pname + ", " + str(self.cid) + ", " + str(self.phit)
         
 class Favorite (models.Model) :
     fid = models.IntegerField(primary_key=True)
