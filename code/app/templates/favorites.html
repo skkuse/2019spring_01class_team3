@@ -12,19 +12,19 @@
     {% for f in favorites %}
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="card h-100">
-            <p class="card-brand other-brands-name">{{f.id.brand}}</p>
-            <a href="{% url 'detail' pcode=f.id.pcode %}">
-                <img class="card-img-top" src="/media/img/products/{{f.id.pcode}}.png" alt="">
+            <p class="card-brand other-brands-name">{{f.pid.brand}}</p>
+            <a href="{% url 'detail' pcode=f.pid.pcode %}">
+                <img class="card-img-top" src="/media/img/products/{{f.pid.pcode}}.png" alt="">
             </a>
             <div class="card-body">
                 <p class="card-title">
-                    <a href="{% url 'detail' pcode=f.id.pcode %}">{{f.id.pname}}</a>
+                    <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
                 </p>
 
-                <p class="card-text">{{f.id.cid.cname}}</p>
+                <p class="card-text">{{f.pid.cid.cname}}</p>
 
                 <p class="origin-price mb-0">\{{f.kprice}}</p>
-                <p class="disc-price mb-0">\{{f.id.price}}</p>
+                <p class="disc-price mb-0">\{{f.pid.price}}</p>
 
             </div>
             <table>

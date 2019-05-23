@@ -14,7 +14,6 @@ from django.views.decorators.csrf import csrf_protect
 
 # 기본 함수
 
-
 def home(request):
     ko_products = Product.objects.filter(cid=1)
 
@@ -108,17 +107,15 @@ def register(request):
 
 # Favorites System
 def view_favorites(request):
-    # user login 실패시..
-    # favorites = Favorite.objects.filter(uid = 100)
 
-        # user 성공하면...
     favorites = Favorite.objects.filter(uid=request.user)
 
     # API 추가
     ex_rate = getExRate()
+
     for f in favorites:
-        if int(f.id.cid) != 1:
-            f.id.price = "{:,}".format(int(ex_rate[str(f.id.cid.cname)] * int(f.id.price)))
+        if int(str(f.pid.cid)) != 1:
+            f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid.cname)] * int(f.pid.price)))
 
 
     return render(request, 'favorites.html', {'favorites': favorites})
@@ -133,27 +130,20 @@ def delFavorite(request, del_fid):
 
 def addFavorite(request, add_id):
     if request.method == 'GET':
-        '''
-        product = Product.objects.get(id = add_id)
-        favorite = Favorite(id=product, uid=100)
-        favorite.save()
-        return view_favorites(request)
-        '''
-
-        # User 연동 성공하면...
-
         user = request.user
         product = Product.objects.get(id=add_id)
         ko_id = Product.objects.filter(pcode=product.pcode) #.filter(cid=0)
+
+        ######kprice add 기능 구현 ######
+        ###아직 kprice 0으로 뜸! ###
+
         kprice = '0'
         for k in ko_id:
             if k.cid == 1: kprice = "{:,}".format(k.price)
 
-        favorite = Favorite(id=product, uid=user, kprice=kprice)
+        favorite = Favorite(pid=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
-
-        # 원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
 # Comparing System
 
@@ -210,7 +200,5 @@ def searchList(request):
     pname_dict = {}
     for f in search_list :
         pname_dict[f.pcode] = f.pname
-
-
 
     return render(request, 'searchList.html', {'products': search_list, 'q': qu, 'pname_dict' : pname_dict})
