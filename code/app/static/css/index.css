@@ -25,6 +25,15 @@ body {
     margin: 0 auto;
 }
 
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    padding: 0px 10px;
+}
+
 
 /* Navbar */
 
@@ -35,17 +44,6 @@ body {
 .navbar h2 {
     margin-bottom: 0px;
 }
-
-
-/* Footer */
-
-
-/* 
-footer {
-    position: absolute;
-    bottom: 0px;
-    width: 100%;
-} */
 
 
 /* 왼쪽 카테고리 or 브랜드 리스트 */
@@ -108,13 +106,17 @@ footer {
     font-size: 18px;
 }
 
+.card-body {
+    padding: 10px;
+}
+
 .card-body-container {
     position: absolute;
     /* bottom: 10px; */
 }
 
 .card-title {
-    /* margin-bottom: 5px; */
+    margin-bottom: 0px;
     font-size: 18px;
 }
 

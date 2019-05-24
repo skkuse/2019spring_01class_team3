@@ -23,7 +23,6 @@ urlpatterns = [
     re_path('^register/$', user_views.register, name='register'),
     re_path('^searchList/$', user_views.searchList, name='searchList'),
     re_path('^favorites/$', user_views.view_favorites, name='favorites'),
-
     path('', include('app.urls')),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
