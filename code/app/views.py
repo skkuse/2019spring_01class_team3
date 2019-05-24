@@ -147,17 +147,24 @@ def addFavorite(request, add_id):
 
 # Comparing System
 
-
+#HIT 수 올리기 반영
 def detail(request, pcode):
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
+        print(products)
+        print(pcode)
 
         p = products[0]
 
         ex_rate = getExRate()
 
         for product in products:
-            if int(str(product.cid)) != 1:
+            if int(str(product.cid)) == 1:
+                print(product.phit)
+                product.phit += 1
+                product.save()
+                print(product.phit)
+            else:
                 product.price = int(int(product.price) *
                                     ex_rate[str(product.cid.cname)])
             product.price = "{:,}".format(product.price)
