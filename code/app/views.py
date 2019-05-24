@@ -9,7 +9,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models.query import QuerySet
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 
 # 기본 함수
@@ -201,23 +200,17 @@ def searchList(request):
         qu = search_list[0]
     except:
         qu = None
+    dissearch_list = search_list.filter(cid=1)
 
-
-    paginator = Paginator(search_list, 10)
-    page_request_var = "page"
+    paginator = Paginator(dissearch_list, 24)
+    page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
-        queryset = paginator.page(page)
+        search = paginator.page(page)
     except PageNotAnInteger:
-        queryset = paginator.page(1)
+        search = paginator.page(1)
     except EmptyPage:
-        queryset = paginator.page(paginator.num_pages)
+        search = paginator.page(paginator.num_pages)
 
 
-    pname_dict = {}
-    for f in search_list :
-        pname_dict[f.pcode] = f.pname
-
-
-
-    return render(request, 'searchList.html', {'products': search_list, 'q': qu, 'pname_dict' : pname_dict})
+    return render(request, 'searchList.html', {'products': search_list, 'q': qu,'page_request_var': page_request_var, 'search': search})

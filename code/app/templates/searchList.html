@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
+
+<div class="row mt-4">
 {% if q == None %}
+<!-- 여기서부터 검색 결과가 없을 때 -->
 <div class="jumbotron">
   <h1 class="display-3">No Data!</h1>
   <p class="lead">검색 결과를 찾을 수 없습니다. 이용에 불편을 드려서 죄송합니다.</p>
@@ -12,49 +15,64 @@
 </div>
 {% else %}
 <!-- 여기서부터 검색어 존재하고,  성공했을 때 쿼리 -->
-{% for dict_pcode,dict_pname in pname_dict.items %}
 
-<div class="col-lg-4 col-md-6 mb-4 my-5">
-  <div class="card h-100">
-    <a href="{% url 'detail' pcode=dict_pcode %}">
-      <img class="card-img-top" src="/media/img/products/{{dict_pcode}}.png" alt="">
-    </a>
-    <div class="card-body">
-      <p class="card-title">
-        <a href="{% url 'detail' pcode=q.pcode %}" style="color: black;">{{dict_pname}}</a>
-      </p>
-      <p class="card-text other-brands-name">{{q.brand}}</p>
-      <table class="searchlist-table">
+{% for s in search %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-200">
+            <p class="card-brand other-brands-name">{{s.brand}}</p>
+            <a href="{% url 'detail' pcode=s.pcode %}">
+                <img class="card-img-top product-img" src="/media/img/products/{{s.pcode}}.png" alt="">
+            </a>
+            <div class="card-body index-card-body">
+                <div class="card-body-container">
+                    <p class="card-title">
+                        <a href="{% url 'detail' pcode=s.pcode %}">{{s.pname}}</a>
+                    </p>
+                    <table class="searchlist-table">
+                      {{p}}{% for q in products %} {% if q.pname == s.pname %}
+                      <tr>
+                        <td class="td-country">
+                          {{q.cid.short_cname}}
+                        </td>
+                        <td>
+                          {{q.price}}{{q.cid.currency}}
+                          <a href={{product.url}} target="_blank"></a>
 
-          {{p}}
+                        </td>
+                      </tr>
+                      {% endif %} {% endfor %}
+                      </table>
 
-
-          {% for q in products %}
-
-          {% if dict_pname == q.pname %}
-
-          <tr>
-              <td class="td-country">
-                  {{ q.cid.short_cname }}
-              </td>
-              <td>
-                  {{ q.price }} {{ q.cid.currency }} <a href={{product.url}} target="_blank"></a>
-
-
-              </td>
-          </tr>
-
-          {% endif %}
-
-          {% endfor %}
-      </table>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-
-{% endfor %}
+    {% endfor %}
 {% endif %}
 
 
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+
+    {% if search.has_previous %}
+    <li class="page-item"><a class="page-link" href="/?{{page_request_var}}={{search.previous_page_number}}">Previous</a></li>
+    {% endif %}
+    {% for num in search.paginator.page_range %}
+      {% if search.number == num %}
+        <strong>{{num}}</strong>
+      {% elif num > search.number|add:'-3' and num < search.number|add:'3' %}
+        {{num}}
+      {% endif %}
+    {% endfor %}
+
+    {% if search.has_next %}
+    <li class="page-item"><a class="page-link" href="/?page={{search.next_page_number}}">Next</a></li>
+    {% endif %}
+  </ul>
+</nav>
+
+
+</div>
 
 {% endblock content %}
