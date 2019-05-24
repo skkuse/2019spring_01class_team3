@@ -1,5 +1,9 @@
-.td-country {
+td {
     padding-right: 10px;
+}
+
+.td-country {
+    /* padding-right: 10px; */
     font-size: 20px;
 }
 

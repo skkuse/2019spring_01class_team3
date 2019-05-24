@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import *
@@ -8,26 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models.query import QuerySet
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 
 # 기본 함수
-
-def home(request):
-    ko_products = Product.objects.filter(cid=1)
-
-    products = []
-
-    count = 0
-    for p in ko_products:
-        if count == 20:
-            break
-        count += 1
-        products.append(p)
-
-    return render(request, 'index.html', {'products': products})
-
 
 def getExRate():
     # day format : yyyymmdd
@@ -39,7 +22,7 @@ def getExRate():
     ex_rate_response = req.get(url)
     ex_rate_json = ex_rate_response.json()
 
-    if str(ex_rate_response) != '<Response [200]>' or len(ex_rate_json) == 0:
+    if str(ex_rate_response) != '<Response [200]>' or len(ex_rate_json) == 0: # 주말엔 없어서 그냥 -2일로 환율 확인.
         day = str(datetime.today().year) + \
             '%02d' % datetime.today().month + str(datetime.today().day - 2)
 
@@ -60,6 +43,26 @@ def getExRate():
             ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
 
     return ex_rate
+
+
+# HOME
+def home(request):
+    products = Product.objects.filter(cid=1).order_by('-phit')[:20]
+
+    return render(request, 'index.html', {'products': products})
+
+
+def home_filter(request, f, name):
+    products=[]
+
+    if f == "category":
+        products = Product.objects.filter(category=name).filter(cid=1).order_by('-phit')[:20]
+    elif f == "brand":
+        products = Product.objects.filter(brand__icontains=name).filter(cid=1).order_by('-phit')[:20]
+    
+    return render(request, 'index.html', {'products':products})
+    
+
 
 # User Management System
 @csrf_protect
@@ -151,8 +154,8 @@ def addFavorite(request, add_id):
 def detail(request, pcode):
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
-        print(products)
-        print(pcode)
+        # print(products)
+        # print(pcode)
 
         p = products[0]
 
@@ -160,10 +163,10 @@ def detail(request, pcode):
 
         for product in products:
             if int(str(product.cid)) == 1:
-                print(product.phit)
+                # print(product.phit)
                 product.phit += 1
                 product.save()
-                print(product.phit)
+                # print(product.phit)
             else:
                 product.price = int(int(product.price) *
                                     ex_rate[str(product.cid.cname)])
@@ -171,6 +174,8 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
+
+# SEARCH system
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None

@@ -14,21 +14,21 @@
             {% for product in products %}
             <tr>
                 <td class="td-country">
-                    {{ product.cid }}
+                    {{ product.cid.cname }}
                 </td>
                 <td>
-                    {{ product.price }}원
+                    {{ product.price }}원</td>
+                <td>
                     <a href={{product.url}} target="_blank"><i class='far fa-paper-plane'></i></a>
-
-
+                </td>
+                <td>
                     {% if user.is_authenticated %}
                     <a href="{% url 'addFavorite' add_id=product.id %}"><i class='fas fa-heart'></i></a>
                     <!-- fas fa-heart -->
+                </td>
 
-                    {% else %}
-
-                    <a  data-toggle="guest" data-placement="right" title="로그인 후 이용가능"><i class='far fa-heart'></i></a>
-                    {% endif %}
+                {% else %}
+                <a data-toggle="guest" data-placement="right" title="로그인 후 이용가능"><i class='far fa-heart'></i></a> {% endif %}
 
                 </td>
             </tr>
@@ -41,9 +41,9 @@
 <!-- /.row -->
 
 <script>
-$(function () {
-  $('[data-toggle="guest"]').tooltip()
-})
+    $(function() {
+        $('[data-toggle="guest"]').tooltip()
+    })
 </script>
 
 <!-- Related Projects Row -->

@@ -1,6 +1,6 @@
 function left_list_change(id) {
-    
-    if (id == "select-cat"){
+
+    if (id == "select-cat") {
         document.getElementById("select-cat").style.color = 'black';
         document.getElementById("select-brand").style.color = '#6c757d99';
 
@@ -10,9 +10,9 @@ function left_list_change(id) {
     } else {
         document.getElementById("select-brand").style.color = 'black';
         document.getElementById("select-cat").style.color = '#6c757d99';
-        
+
         document.getElementById("list-brand").style.display = 'block';
         document.getElementById("list-cat").style.display = 'none';
     }
 
- }
+}
