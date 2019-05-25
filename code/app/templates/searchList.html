@@ -18,7 +18,7 @@
 
 {% for s in search %}
     <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card h-200">
+        <div class="card h-500">
             <p class="card-brand other-brands-name">{{s.brand}}</p>
             <a href="{% url 'detail' pcode=s.pcode %}">
                 <img class="card-img-top product-img" src="/media/img/products/{{s.pcode}}.png" alt="">
@@ -28,20 +28,29 @@
                     <p class="card-title">
                         <a href="{% url 'detail' pcode=s.pcode %}">{{s.pname}}</a>
                     </p>
-                    <table class="searchlist-table">
-                      {{p}}{% for q in products %} {% if q.pname == s.pname %}
-                      <tr>
-                        <td class="td-country">
-                          {{q.cid.short_cname}}
-                        </td>
-                        <td>
-                          {{q.price}}{{q.cid.currency}}
-                          <a href={{product.url}} target="_blank"></a>
+                    <table>
+                        {% for q in products %}
 
-                        </td>
-                      </tr>
-                      {% endif %} {% endfor %}
-                      </table>
+                        <tr>
+
+                            {% if q.pname == s.pname %}
+                            <td class="td-country">
+                                {{ q.cid.cname }}
+                            </td>
+                            <td>
+                                {{ q.price }}원
+                            </td>
+                            {% endif %}
+                            <td>
+                                <a href={{product.url}} target="_blank"></a>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </table>
+
 
                 </div>
             </div>

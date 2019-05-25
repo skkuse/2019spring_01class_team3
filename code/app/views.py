@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import UserRegisterForm
 from .models import *
@@ -8,26 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.db.models.query import QuerySet
 from django.views.decorators.csrf import csrf_protect
 
 # 기본 함수
-
-
-def home(request):
-    ko_products = Product.objects.filter(cid=1)
-
-    products = []
-
-    count = 0
-    for p in ko_products:
-        if count == 20:
-            break
-        count += 1
-        products.append(p)
-
-    return render(request, 'index.html', {'products': products})
-
 
 def getExRate():
     # day format : yyyymmdd
@@ -39,7 +22,7 @@ def getExRate():
     ex_rate_response = req.get(url)
     ex_rate_json = ex_rate_response.json()
 
-    if str(ex_rate_response) != '<Response [200]>' or len(ex_rate_json) == 0:
+    if str(ex_rate_response) != '<Response [200]>' or len(ex_rate_json) == 0: # 주말엔 없어서 그냥 -2일로 환율 확인.
         day = str(datetime.today().year) + \
             '%02d' % datetime.today().month + str(datetime.today().day - 2)
 
@@ -60,6 +43,26 @@ def getExRate():
             ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
 
     return ex_rate
+
+
+# HOME
+def home(request):
+    products = Product.objects.filter(cid=1).order_by('-phit')[:20]
+
+    return render(request, 'index.html', {'products': products})
+
+
+def home_filter(request, f, name):
+    products=[]
+
+    if f == "category":
+        products = Product.objects.filter(category=name).filter(cid=1).order_by('-phit')[:20]
+    elif f == "brand":
+        products = Product.objects.filter(brand__icontains=name).filter(cid=1).order_by('-phit')[:20]
+
+    return render(request, 'index.html', {'products':products})
+
+
 
 # User Management System
 @csrf_protect
@@ -107,17 +110,15 @@ def register(request):
 
 # Favorites System
 def view_favorites(request):
-    # user login 실패시..
-    # favorites = Favorite.objects.filter(uid = 100)
 
-        # user 성공하면...
     favorites = Favorite.objects.filter(uid=request.user)
 
     # API 추가
     ex_rate = getExRate()
+
     for f in favorites:
-        if int(f.id.cid) != 1:
-            f.id.price = "{:,}".format(int(ex_rate[str(f.id.cid.cname)] * int(f.id.price)))
+        if int(str(f.pid.cid)) != 1:
+            f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid.cname)] * int(f.pid.price)))
 
 
     return render(request, 'favorites.html', {'favorites': favorites})
@@ -132,27 +133,20 @@ def delFavorite(request, del_fid):
 
 def addFavorite(request, add_id):
     if request.method == 'GET':
-        '''
-        product = Product.objects.get(id = add_id)
-        favorite = Favorite(id=product, uid=100)
-        favorite.save()
-        return view_favorites(request)
-        '''
-
-        # User 연동 성공하면...
-
         user = request.user
         product = Product.objects.get(id=add_id)
         ko_id = Product.objects.filter(pcode=product.pcode) #.filter(cid=0)
+
+        ######kprice add 기능 구현 ######
+        ###아직 kprice 0으로 뜸! ###
+
         kprice = '0'
         for k in ko_id:
             if k.cid == 1: kprice = "{:,}".format(k.price)
 
-        favorite = Favorite(id=product, uid=user, kprice=kprice)
+        favorite = Favorite(pid=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
-
-        # 원하는 페이지로 설정...보통 즐겨찾기는 세부페이지에서 진행하므로
 
 # Comparing System
 
@@ -160,8 +154,8 @@ def addFavorite(request, add_id):
 def detail(request, pcode):
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
-        print(products)
-        print(pcode)
+        # print(products)
+        # print(pcode)
 
         p = products[0]
 
@@ -169,10 +163,10 @@ def detail(request, pcode):
 
         for product in products:
             if int(str(product.cid)) == 1:
-                print(product.phit)
+                # print(product.phit)
                 product.phit += 1
                 product.save()
-                print(product.phit)
+                # print(product.phit)
             else:
                 product.price = int(int(product.price) *
                                     ex_rate[str(product.cid.cname)])
@@ -180,6 +174,8 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p})
 
+
+# SEARCH system
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
@@ -202,7 +198,7 @@ def searchList(request):
         qu = None
     dissearch_list = search_list.filter(cid=1)
 
-    paginator = Paginator(dissearch_list, 24)
+    paginator = Paginator(dissearch_list, 18)
     page_request_var = 'page'
     page = request.GET.get(page_request_var)
     try:
