@@ -188,25 +188,27 @@ def searchList(request):
         searchname = Product.objects.filter(
             pname__icontains=query
             ).distinct()
+            #이름으로 검색
         searchcode = Product.objects.filter(
             pcode__icontains=query
             ).distinct()
+            #코드로 검색
         search_list = searchname | searchcode
+        #검색 결과 합침 --> 상품 중복이 있음
+        dissearch_list = search_list.filter(cid=1)
+        #그 중 대한민국꺼만으로 추림 --> 상품중복없음
     try:
         qu = search_list[0]
     except:
         qu = None
-    dissearch_list = search_list.filter(cid=1)
 
-    paginator = Paginator(dissearch_list, 18)
-    page_request_var = 'page'
-    page = request.GET.get(page_request_var)
+
+    paginator = Paginator(dissearch_list, 15)
+    page = request.GET.get('page')
     try:
         search = paginator.page(page)
     except PageNotAnInteger:
         search = paginator.page(1)
     except EmptyPage:
         search = paginator.page(paginator.num_pages)
-
-
-    return render(request, 'searchList.html', {'products': search_list, 'q': qu,'page_request_var': page_request_var, 'search': search})
+    return render(request, 'searchList.html', {'products': search_list, 'q': qu,'search': search})
