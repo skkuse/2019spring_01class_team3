@@ -10,7 +10,7 @@ urlpatterns = [
     re_path('^logout/$',
             auth_views.LogoutView.as_view(template_name="logout.html"), name="logout"),
     re_path('^detail/(?P<pcode>.*)$', views.detail, name="detail"),
-    re_path('^searchList/$', views.searchList, name="searchList"),
+    re_path('^searchList/', views.searchList, name="searchList"),
     # $ : 뒤에 더이상 다른 슬래시가 오지 않도록 막아버리는 기능 (정규식이에요)
     re_path('^favorites/(?P<del_fid>.*)$',
             views.delFavorite, name="delFavorite"),
