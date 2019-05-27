@@ -202,7 +202,7 @@ def searchList(request):
     except:
         qu = None
 
-
+    print(search_list)
     paginator = Paginator(dissearch_list, 15)
     page = request.GET.get('page')
     try:
