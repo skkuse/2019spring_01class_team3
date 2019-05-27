@@ -148,6 +148,7 @@ def addFavorite(request, add_id):
         favorite.save()
         return detail(request, product.pcode)
 
+
 # Comparing System
 
 #HIT 수 올리기 반영
@@ -180,11 +181,13 @@ def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
 
+    print("쿼리:", query)
+    
     searchname = Product.objects.all()
     searchcode = Product.objects.all()
     search_list = Product.objects.none()
 
-    if query:
+    if query is not None:
         searchname = Product.objects.filter(
             pname__icontains=query
             ).distinct()
