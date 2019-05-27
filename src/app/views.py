@@ -132,6 +132,7 @@ def delFavorite(request, del_fid):
 
 
 def addFavorite(request, add_id):
+    print("-------------------------"+add_id)
     if request.method == 'GET':
         user = request.user
         product = Product.objects.get(id=add_id)
@@ -147,6 +148,7 @@ def addFavorite(request, add_id):
         favorite = Favorite(pid=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
+
 
 # Comparing System
 
@@ -180,27 +182,30 @@ def searchList(request):
     try: query = request.GET.get('q')
     except: query = None
 
-    searchname = Product.objects.all()
-    searchcode = Product.objects.all()
-    search_list = Product.objects.none()
+    dissearch_list = []
+    
+    if query is not None and len(query) != 0:
+        search_list = Product.objects.filter(pname__icontains=query).filter(cid=1)
+        if len(search_list) == 0:
+            print("pcode 검색!")
+            search_list = Product.objects.filter(pcode__icontains=query).filter(cid=1)
 
-    if query:
-        searchname = Product.objects.filter(
-            pname__icontains=query
-            ).distinct()
-            #이름으로 검색
-        searchcode = Product.objects.filter(
-            pcode__icontains=query
-            ).distinct()
-            #코드로 검색
-        search_list = searchname | searchcode
-        #검색 결과 합침 --> 상품 중복이 있음
-        dissearch_list = search_list.filter(cid=1)
-        #그 중 대한민국꺼만으로 추림 --> 상품중복없음
-    try:
-        qu = search_list[0]
-    except:
-        qu = None
+        pcode_dict = {}
+        for p in search_list:
+            if p.pcode not in pcode_dict:
+            
+                pcode_dict[p.pcode] = p.pname
+                p.price = "{:,}".format(p.price)
+                dissearch_list.append(p)
+
+    elif len(query) == 0: # 빈 쿼리 날렸을 때. 뒤에 슬라이싱은 원하는대로 설정하면 될 듯.
+        dissearch_list = Product.objects.filter(cid=1).order_by('-phit')[:50]
+
+
+    # 첫 element 찾기
+    if len(dissearch_list) != 0: 
+        elem = dissearch_list[0]
+    else: elem = None
 
     print(search_list)
     paginator = Paginator(dissearch_list, 15)
@@ -211,4 +216,5 @@ def searchList(request):
         search = paginator.page(1)
     except EmptyPage:
         search = paginator.page(paginator.num_pages)
-    return render(request, 'searchList.html', {'products': search_list, 'q': qu,'search': search})
+
+    return render(request, 'searchList.html', {'products': dissearch_list, 'q': elem, 'search': search, 'query':query})

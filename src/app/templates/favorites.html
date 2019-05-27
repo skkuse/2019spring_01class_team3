@@ -44,29 +44,52 @@
     {% endfor %}
 
     {% else %}
-        <div class="card h-500">
-            <a>
-            <div class="card-body" >
-                <button title="Like" type="button" data-toggle="toggle" class="btn btn-link" ><i class="fas fa-heart" aria-hidden="true"></i></button>
-                <a class="btn btn-link" href="#" role="button" title="Like" type="button"  ><i class="fas fa-heart" aria-hidden="true"></i></a>
-                <a class="btn btn-info" href="#" role="button">Link Button</a>
 
-                <p>Envelope icon as a link:
-                    <a href="#"><span class="fas fa-heart"></span></a>
-                </p>
-            </div>
-            </a>
-        </div>
+    <div style="height:300px; text-align:center">
+
+        <p class="text-center">관심상품에 추가한 항목이 없습니다.</p>
+    </div>
 
 
-<script>
-$("button").click(function(){
-    $(this).find("i").toggleClass("fas fa-heart far fa-heart");
-});
-</script>
 
-{% endif %}
+    {% endif %}
 
 </div>
 
+
 {% endblock content %}
+
+
+
+<!--
+            location.href = "{% url 'home' %}"
+
+
+<a>
+    <div class="card-body" >
+        <button title="Like" type="button" data-toggle="toggle" class="btn btn-link"
+                onclick="addFavorite_Toggle()">
+            <i class="fas fa-heart" aria-hidden="true"></i></button>
+
+        <input type="checkbox" id="editor_draw_erase" data-style="quick" data-toggle="toggle"data-onstyle="link" data-on="<i class='far fa-heart'></i>" data-off="<i class='fas fa-heart'></i>"">
+
+
+    </div>
+</a>
+ $(".toggle").click(function() {
+        if($(this).hasClass("off")){
+            console.log("draw");
+            alert("draw");
+        }
+        else{
+            console.log("erase");
+            alert("erase");
+        }
+    });
+-->
+
+
+
+
+
+
