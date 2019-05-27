@@ -1,0 +1,33 @@
+td {
+    padding-right: 10px;
+}
+
+.td-country {
+    /* padding-right: 10px; */
+    font-size: 20px;
+}
+
+.td-country a {
+    color: black;
+}
+
+i.fa-paper-plane {
+    font-size: 18px;
+    color: #007bff;
+    padding: 2px;
+}
+
+
+/* fas fa-heart는 막힌 하트 */
+
+i.fa-heart {
+    font-size: 18px;
+    color: #ff70c4;
+    padding: 2px;
+}
+
+i.fa-trash-alt {
+    font-size: 18px;
+    color: gray;
+    padding: 2px;
+}

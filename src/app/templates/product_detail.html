@@ -1,0 +1,112 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- Portfolio Item Row -->
+<div class="row mt-5">
+    <div class="col-md-7">
+        <img class="img-fluid" src="/media/img/products/{{p.pcode}}.png" alt="">
+    </div>
+
+    <div class="col-md-5">
+        <h5 class="my-3">{{p.pname}}</h5>
+        <p class="other-brands-name">{{p.brand}}</p>
+
+        <table>
+            {% for product in products %}
+            <tr>
+                <td class="td-country">
+                    {{ product.cid.cname }}
+                </td>
+                <td>
+                    {{ product.price }}원</td>
+                <td>
+                    <a href={{product.url}} target="_blank"><i class='far fa-paper-plane'></i></a>
+                </td>
+                <td>
+                    {% if user.is_authenticated %}
+
+
+                    <a href="{% url 'addFavorite' add_id=product.id %}" ><i class='fas fa-heart'></i></a>
+
+                    <input type="checkbox" id="favorite_add_del" data-style="quick" data-toggle="toggle"
+                           data-onstyle="link"
+                           onchange="clickEvent(this,{{product.id}});"
+                           data-on="<i class='fas fa-heart'>nnn</i>" data-off="<i class='far fa-heart'>mmm</i>">
+                    </input>
+
+                    <div id = "results"></div>
+
+
+                    {% else %}
+                    <a  data-toggle="guest" data-placement="right" title="로그인 후 이용가능"><i class='far fa-heart'></i></a>
+
+
+                    {% endif %}
+
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+
+</div>
+<!--
+
+location.href = "{% url 'delFavorite' del_fid=id%}"
+location.href="{% url 'addFavorite' add_id=id%}"
+location.href="{% url 'addFavorite' add_id='${id}'%}"
+
+
+-->
+
+<script>
+
+$(function () {
+  $('[data-toggle="guest"]').tooltip()
+});
+
+function clickEvent(chkbox, id ){
+    if ( chkbox.checked == true ){
+        var id = id;
+        alert("관심상품으로 추가합니다."+id);
+        location.href ="{% url 'addFavorite' add_id='$id'%}" ;
+        }
+    else{
+        alert("관심상품에서 제거합니다."+id);
+        }
+}
+
+</script>
+
+<!-- Related Projects Row -->
+<h5 class="mt-5">Related Produts</h5>
+
+<div class="row">
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+    <div class="col-md-3 col-sm-6 mb-4">
+        <a href="#">
+            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        </a>
+    </div>
+
+</div>
+<!-- /.row -->
+{% endblock %}

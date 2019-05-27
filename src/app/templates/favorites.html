@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block content %}
+
+<!-- <div class="card card-signin my-5">
+    <div class="card-body"> -->
+
+<h3 class="text-center my-5">Favorites</h3>
+
+<!-- row-->
+<div class="row">
+
+    {% if favorites %}
+    {% for f in favorites %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100">
+            <p class="card-brand other-brands-name">{{f.pid.brand}}</p>
+            <a href="{% url 'detail' pcode=f.pid.pcode %}">
+                <img class="card-img-top" src="/media/img/products/{{f.pid.pcode}}.png" alt="">
+            </a>
+            <div class="card-body">
+                <p class="card-title">
+                    <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
+                </p>
+
+                <p class="card-text">{{f.pid.cid.cname}}</p>
+
+                <p class="origin-price mb-0">\{{f.kprice}}</p>
+                <p class="disc-price mb-0">\{{f.pid.price}}</p>
+
+            </div>
+            <table>
+                <tr>
+                    <td style="text-align: right">
+                        <a href="{% url 'delFavorite' del_fid=f.fid %}"><i class='far fa-trash-alt' style='font-size:18px'>
+                        </i></a>
+                    </td>
+                    <td style="text-align: left">
+                        <a href="{{f.pid.url}}" target="_blank"><i class='far fa-paper-plane'></i></a>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+    {% endfor %}
+
+    {% else %}
+
+    <div style="height:300px; text-align:center">
+
+        <p class="text-center">관심상품에 추가한 항목이 없습니다.</p>
+    </div>
+
+
+
+    {% endif %}
+
+</div>
+
+
+{% endblock content %}
+
+
+
+<!--
+            location.href = "{% url 'home' %}"
+
+
+<a>
+    <div class="card-body" >
+        <button title="Like" type="button" data-toggle="toggle" class="btn btn-link"
+                onclick="addFavorite_Toggle()">
+            <i class="fas fa-heart" aria-hidden="true"></i></button>
+
+        <input type="checkbox" id="editor_draw_erase" data-style="quick" data-toggle="toggle"data-onstyle="link" data-on="<i class='far fa-heart'></i>" data-off="<i class='fas fa-heart'></i>"">
+
+
+    </div>
+</a>
+ $(".toggle").click(function() {
+        if($(this).hasClass("off")){
+            console.log("draw");
+            alert("draw");
+        }
+        else{
+            console.log("erase");
+            alert("erase");
+        }
+    });
+-->
+
+
+
+
+
+
