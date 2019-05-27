@@ -129,6 +129,7 @@ def delFavorite(request, del_fid):
 
 
 def addFavorite(request, add_id):
+    print("-------------------------"+add_id)
     if request.method == 'GET':
         user = request.user
         product = Product.objects.get(id=add_id)
@@ -144,6 +145,7 @@ def addFavorite(request, add_id):
         favorite = Favorite(pid=product, uid=user, kprice=kprice)
         favorite.save()
         return detail(request, product.pcode)
+
 
 # Comparing System
 
