@@ -21,8 +21,9 @@
 <div class="search-result mt-5" style="text-align: center">
     <h5>"{{query}}"에 대한 검색 결과입니다.</h5>
 </div>
+
 <div class="row mt-4">
-    {% for s in products %}
+    {% for s in search %}
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="card h-200">
             <p class="card-brand other-brands-name">{{s.brand}}</p>

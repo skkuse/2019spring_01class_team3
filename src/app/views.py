@@ -183,7 +183,7 @@ def searchList(request):
     except: query = None
 
     dissearch_list = []
-    
+
     if query is not None and len(query) != 0:
         search_list = Product.objects.filter(pname__icontains=query).filter(cid=1)
         if len(search_list) == 0:
@@ -193,7 +193,7 @@ def searchList(request):
         pcode_dict = {}
         for p in search_list:
             if p.pcode not in pcode_dict:
-            
+
                 pcode_dict[p.pcode] = p.pname
                 p.price = "{:,}".format(p.price)
                 dissearch_list.append(p)
@@ -203,13 +203,13 @@ def searchList(request):
 
 
     # 첫 element 찾기
-    if len(dissearch_list) != 0: 
+    if len(dissearch_list) != 0:
         elem = dissearch_list[0]
     else: elem = None
 
     print(search_list)
     paginator = Paginator(dissearch_list, 15)
-    page = request.GET.get('page')
+    page = request.GET.get('page', 1)
     try:
         search = paginator.page(page)
     except PageNotAnInteger:
