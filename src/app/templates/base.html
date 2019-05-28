@@ -48,7 +48,7 @@
                         <a class="nav-link" href="{% url 'logout' %}">Sign Out</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'favorites' %}">My Favorites</a>
+                        <a class="nav-link" href="{% url 'favorites' %}">Favorites</a>
                     </li>
                     {% else %}
                     <li class="nav-item">
@@ -137,7 +137,7 @@
                 $('#back-to-top').tooltip('hide');
                 $('body,html').animate({
                     scrollTop: 0
-                }, 800);
+                }, 500);
                 return false;
             });
 

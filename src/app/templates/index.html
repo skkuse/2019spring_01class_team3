@@ -29,7 +29,7 @@
 </div>
 
 
-<!-- 할인 많이 하는 상품 top N개 -->
+<!-- 조회수 순서 top N개 -->
 <div class="row mt-4" id="view-top-20-items">
 
     {% for p in products %}
@@ -37,7 +37,8 @@
         <div class="card h-100">
             <p class="card-brand other-brands-name">{{p.brand}}</p>
             <a href="{% url 'detail' pcode=p.pcode %}">
-                <img class="card-img-top product-img" src="/media/img/products/{{p.pcode}}.png" alt="">
+                <img class="card-img-top product-img" src="/media/img/products/{{p.pcode}}.png" alt=""
+                onerror="this.src='http://placehold.it/500x300'">
             </a>
             <div class="card-body index-card-body">
                 <div class="card-body-container">

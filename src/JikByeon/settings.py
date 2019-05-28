@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'app.apps.AppConfig',
     'crispy_forms',
     'import_export',
+    'el_pagination',
 ]
 
 MIDDLEWARE = [
