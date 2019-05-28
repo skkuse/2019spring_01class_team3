@@ -22,7 +22,7 @@
     <h5>"{{query}}"에 대한 검색 결과입니다.</h5>
 </div>
 <div class="row mt-4">
-    {% for s in products %}
+    {% for s in search %}
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="card h-200">
             <p class="card-brand other-brands-name">{{s.brand}}</p>
@@ -59,11 +59,11 @@
 
 
 <!--페이지 부분. href를 했는데 클릭이 안됨.-->
-<div class="pagination">
+<!-- <div class="pagination">
     <span class="step-links">
         {% if search.has_previous %}
 
-        <a href="?page={{ search.previous_page_number }}">previous</a>
+        <a href="?page={{ search.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
         {% endif %}
 
         <span class="current">
@@ -75,10 +75,89 @@
 
         {% endif %}
     </span>
-</div>
+</div> -->
 
+<nav aria-label="Page" class="mx-auto">
+    {% if search.has_other_pages %}
+    <ul class="pagination justify-content-center">
+        {% if search.has_previous %}
+        <!-- 이전 -->
+        <li class="page-item">
+            <!-- 처음 페이지 -->
+            <a class="page-link" href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <!-- 이전 페이지 -->
+            <a class="page-link"
+                href="?page={{ search.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <!-- 처음 페이지 -->
+            <a class="page-link" href="#!">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_range %}
+        {% if search.number == num %}
+        <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if search.has_next %}
+        <!-- 이후 -->
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ search.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    <!-- Pagination endif -->
+
+</nav>
 
 {% endif %}
+<!-- 쿼리 존재 endif -->
 
 
 {% endblock content %}
