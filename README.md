@@ -11,16 +11,22 @@ Repository for team project by Team 3
 ## Documents
 
 ### Proposal
-[Project proposal (PowerPoint)](docs/3조 제안서.pdf)
+[Project proposal](https://github.com/skkuse/2019spring_01class_team3/blob/master/docs/3%EC%A1%B0%20%EC%A0%9C%EC%95%88%EC%84%9C.pdf)
 
 ### Requirements
-[Requirement specification document (Word)](docs/3조 요구사항 명세서.pdf)
+[Requirement specification document](https://github.com/skkuse/2019spring_01class_team3/blob/master/docs/3%EC%A1%B0%20%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD%20%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
 
 ### System Design
-[System design document (Word)](docs/3조 설계명세서.pdf)
+[System design document](https://github.com/skkuse/2019spring_01class_team3/blob/master/docs/3%EC%A1%B0%20%EC%84%A4%EA%B3%84%EB%AA%85%EC%84%B8%EC%84%9C.pdf)
 
 ## Sources
 
-### Install
-1. bash'pip install -r requirements.txt' to install all required dependencies
-2. bash'python manage.py runserver' to start the server
+### Run
+1. Install all required dependencies
+```bash
+pip install -r requirements.txt
+``` 
+2. Start the server
+```bash
+python manage.py runserver
+```
