@@ -14,7 +14,7 @@
             {% for product in products %}
             <tr>
                 <td class="td-country">
-                    {{ product.cid.cname }}
+                    {{ product.cid.short_cname }}
                 </td>
                 <td>
                     {{ product.price }}원</td>
@@ -23,14 +23,10 @@
                 </td>
                 <td>
                     {% if user.is_authenticated %}
-
-
-                    <a href="{% url 'addFavorite' add_id=product.id %}" ><i class='fas fa-heart'></i></a>
-
                     <input type="checkbox" id="favorite_add_del" data-style="quick" data-toggle="toggle"
                            data-onstyle="link"
-                           onchange="clickEvent(this,{{product.id}});"
-                           data-on="<i class='fas fa-heart'>nnn</i>" data-off="<i class='far fa-heart'>mmm</i>">
+                           onchange="clickEvent(this,{{ product.id }});"
+                           data-on="<i class='fas fa-heart'></i>" data-off="<i class='far fa-heart'></i>">
                     </input>
 
                     <div id = "results"></div>
@@ -50,14 +46,6 @@
     </div>
 
 </div>
-<!--
-
-location.href = "{% url 'delFavorite' del_fid=id%}"
-location.href="{% url 'addFavorite' add_id=id%}"
-location.href="{% url 'addFavorite' add_id='${id}'%}"
-
-
--->
 
 <script>
 
@@ -65,17 +53,19 @@ $(function () {
   $('[data-toggle="guest"]').tooltip()
 });
 
-function clickEvent(chkbox, id ){
+
+function clickEvent(chkbox, id){
     if ( chkbox.checked == true ){
         var id = id;
         alert("관심상품으로 추가합니다."+id);
-        location.href ="{% url 'addFavorite' add_id='$id'%}" ;
+        // id = parseInt(id);
+        location.href = "/product_detail/" + id;
+        // "{% url 'addFavorite' add_id=id %}" ;
         }
     else{
         alert("관심상품에서 제거합니다."+id);
         }
 }
-
 
 </script>
 
