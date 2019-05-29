@@ -58,9 +58,36 @@ def home_filter(request, f, name):
     products=[]
 
     if f == "category":
-        products = Product.objects.filter(category=name).filter(cid=1).order_by('-phit')[:20]
+        products = Product.objects.filter(category=name).filter(cid=1).order_by('-phit')
     elif f == "brand":
-        products = Product.objects.filter(brand__icontains=name).filter(cid=1).order_by('-phit')[:20]
+        products = Product.objects.filter(brand__icontains=name).filter(cid=1).order_by('-phit')
+
+    
+    #### PAGINATOR ####
+    paginator = Paginator(products, 15)
+    page = request.GET.get('page')
+
+    try:
+        search = paginator.page(page)
+
+    except PageNotAnInteger:
+        search = paginator.page(1)
+
+    except EmptyPage:
+        search = paginator.page(paginator.num_pages)
+
+
+    # paginator 범위 5개로 제한
+    page_numbers_range = 5 # 보여줄 페이지 range: 5개
+    max_idx = len(paginator.page_range) # 페이지 개수
+
+    current_page = int(page) if page else 1
+    start_idx = int((current_page - 1)/page_numbers_range) * page_numbers_range
+    end_idx = start_idx + page_numbers_range
+
+    if end_idx >= max_idx: end_idx = max_idx
+    
+    page_range = paginator.page_range[start_idx:end_idx]
 
     return render(request, 'index.html', {'products':products})
 
