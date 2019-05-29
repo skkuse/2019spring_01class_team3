@@ -157,7 +157,7 @@ def addFavorite(request, add_id):
 #HIT 수 올리기 반영
 def detail(request, pcode):
     if request.method == 'GET':
-        products = Product.objects.filter(pcode=pcode)
+        products = Product.objects.filter(pcoworkde=pcode)
         # print(products)
         # print(pcode)
 
@@ -185,13 +185,8 @@ def searchList(request):
     except: query = None
 
     dissearch_list = []
-<<<<<<< HEAD
 
-    if query is not None and len(query) != 0:
-=======
-    
     if query is not None and len(query) != 0: # 빈 쿼리가 아닐 때
->>>>>>> 2f86416afd685decabb6aa6710f8ce55a7ffde9c
         search_list = Product.objects.filter(pname__icontains=query).filter(cid=1)
         if len(search_list) == 0:
             search_list = Product.objects.filter(pcode__icontains=query).filter(cid=1)
@@ -204,7 +199,7 @@ def searchList(request):
                 p.price = "{:,}".format(p.price)
                 dissearch_list.append(p)
 
-    elif len(query) == 0: # 빈 쿼리 날렸을 때. 
+    elif len(query) == 0: # 빈 쿼리 날렸을 때.
         dissearch_list = Product.objects.filter(cid=1).order_by('-phit')[:100]
 
 
@@ -213,17 +208,11 @@ def searchList(request):
         elem = dissearch_list[0]
     else: elem = None
 
-<<<<<<< HEAD
-    print(search_list)
-    paginator = Paginator(dissearch_list, 15)
-    page = request.GET.get('page', 1)
-=======
 
     #### PAGINATOR ####
     paginator = Paginator(dissearch_list, 15)
     page = request.GET.get('page')
 
->>>>>>> 2f86416afd685decabb6aa6710f8ce55a7ffde9c
     try:
         search = paginator.page(page)
 
@@ -243,10 +232,10 @@ def searchList(request):
     end_idx = start_idx + page_numbers_range
 
     if end_idx >= max_idx: end_idx = max_idx
-    
+
     page_range = paginator.page_range[start_idx:end_idx]
 
-    
-    return render(request, 'searchList.html', 
-    {'q': elem, 'search': search, 'query':query, 
+
+    return render(request, 'searchList.html',
+    {'q': elem, 'search': search, 'query':query,
     'page_range':page_range, 'num_pages':paginator.num_pages})

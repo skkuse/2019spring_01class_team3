@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'import_export',
     'el_pagination',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,9 @@ MIDDLEWARE = [
 # Authentication backends
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'social_core.backends.google.GoogleOAuth2', # Google
+    'social_core.backends.facebook.FacebookOAuth2', # Facebook
+    'django.contrib.auth.backends.ModelBackend', # Django 기본 유저모델
 )
 
 ROOT_URLCONF = 'JikByeon.urls'
@@ -128,6 +132,11 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS=None
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+
+#social login 용 url namespace
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+LOGIN_REDIRECT_URL='/'
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
