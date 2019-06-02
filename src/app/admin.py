@@ -8,6 +8,6 @@ from .models import *
 # admin.site.register(Country)
 # admin.site.register(Favorite)
 
-@admin.register(Product, Country, Favorite)
+@admin.register(Product, Country, Favorite, Searchlog)
 class ViewAdmin(ImportExportModelAdmin):
     pass

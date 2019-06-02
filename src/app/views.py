@@ -14,35 +14,41 @@ from django.views.decorators.csrf import csrf_protect
 
 def getExRate():
     # day format : yyyymmdd
-    day = str(datetime.today().year) + \
-        '%02d' % datetime.today().month + str(datetime.today().day)
+    # day = str(datetime.today().year) + \
+    #     '%02d' % datetime.today().month + str(datetime.today().day)
+    #
+    # url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
+    #
+    #
+    # ex_rate_response = req.get(url)
+    #
+    # ex_rate_json = ex_rate_response.json()
+    #
+    #
+    # before = 1
+    # while len(ex_rate_json) == 0:
+    #
+    #     day = str(datetime.today().year) + \
+    #         '%02d' % datetime.today().month + str(datetime.today().day - before)
+    #     before += 1
+    #
+    #     url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
+    #
+    #     ex_rate_response = req.get(url)
+    #     print(ex_rate_response)
+    #     ex_rate_json = ex_rate_response.json()
+    #     print(ex_rate_json)
 
-    url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
-
-    ex_rate_response = req.get(url)
-    ex_rate_json = ex_rate_response.json()
-
-    before = 1
-    while len(ex_rate_json) == 0:
-        day = str(datetime.today().year) + \
-            '%02d' % datetime.today().month + str(datetime.today().day - before)
-        before += 1
-
-        url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
-
-        ex_rate_response = req.get(url)
-        ex_rate_json = ex_rate_response.json()
-
-    ex_rate = {}
+    ex_rate = {'미국':1, "프랑스":1, "일본":1}
 
     # DEAL_BAS_R
-    for ex in ex_rate_json:
-        if ex['cur_unit'] == 'USD':
-            ex_rate['미국'] = float(ex['deal_bas_r'].replace(',', ''))
-        elif ex['cur_unit'] == 'EUR':
-            ex_rate['프랑스'] = float(ex['deal_bas_r'].replace(',', ''))
-        elif ex['cur_unit'] == 'JPY(100)':
-            ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
+    # for ex in ex_rate_json:
+    #     if ex['cur_unit'] == 'USD':
+    #         ex_rate['미국'] = float(ex['deal_bas_r'].replace(',', ''))
+    #     elif ex['cur_unit'] == 'EUR':
+    #         ex_rate['프랑스'] = float(ex['deal_bas_r'].replace(',', ''))
+    #     elif ex['cur_unit'] == 'JPY(100)':
+    #         ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
 
     return ex_rate
 
@@ -190,7 +196,11 @@ def detail(request, pcode):
 
         p = products[0]
 
+        print("here1")
         ex_rate = getExRate()
+        print("here2")
+        print(ex_rate)
+        print(request.user)
 
         for product in products:
             if int(str(product.cid)) == 1:
@@ -198,6 +208,16 @@ def detail(request, pcode):
                 product.phit += 1
                 product.save()
                 # print(product.phit)
+
+                user = request.user
+                if user.is_authenticated:
+                    print(user)
+                    searchlog = Searchlog(uid=user,pcode=product)
+                    searchlog.save()
+                    print(searchlog)
+
+
+
             else:
                 product.price = int(int(product.price) *
                                     ex_rate[str(product.cid.cname)])

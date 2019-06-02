@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.contrib.postgres.fields import ArrayField
 
 # Create your models here.
 class Country(models.Model):
@@ -37,3 +37,19 @@ class Favorite (models.Model) :
 
     def __str__(self) :
         return str(self.fid) + ", "+ str(self.pid)
+
+
+class Searchlog (models.Model):
+    sid = models.IntegerField(primary_key=True)
+    uid = models.ForeignKey(User, on_delete=models.PROTECT)
+    pcode = models.ForeignKey(Product,on_delete=models.PROTECT)
+
+
+    def get_pcode(self):
+        return self.pcode
+
+    def get_username(self):
+        return self.uid
+
+    def __str__(self):
+        return str(self.sid) + ", " + str(self.uid) + " , " + str(self.pcode)
