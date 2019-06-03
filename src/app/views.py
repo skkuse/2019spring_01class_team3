@@ -14,41 +14,40 @@ from django.views.decorators.csrf import csrf_protect
 
 def getExRate():
     # day format : yyyymmdd
-    # day = str(datetime.today().year) + \
-    #     '%02d' % datetime.today().month + str(datetime.today().day)
-    #
-    # url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
-    #
-    #
-    # ex_rate_response = req.get(url)
-    #
-    # ex_rate_json = ex_rate_response.json()
-    #
-    #
-    # before = 1
-    # while len(ex_rate_json) == 0:
-    #
-    #     day = str(datetime.today().year) + \
-    #         '%02d' % datetime.today().month + str(datetime.today().day - before)
-    #     before += 1
-    #
-    #     url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
-    #
-    #     ex_rate_response = req.get(url)
-    #     print(ex_rate_response)
-    #     ex_rate_json = ex_rate_response.json()
-    #     print(ex_rate_json)
+    day = str(datetime.today().year) + \
+        '%02d' % datetime.today().month + str(datetime.today().day)
 
-    ex_rate = {'미국':1, "프랑스":1, "일본":1}
+    url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
 
-    # DEAL_BAS_R
-    # for ex in ex_rate_json:
-    #     if ex['cur_unit'] == 'USD':
-    #         ex_rate['미국'] = float(ex['deal_bas_r'].replace(',', ''))
-    #     elif ex['cur_unit'] == 'EUR':
-    #         ex_rate['프랑스'] = float(ex['deal_bas_r'].replace(',', ''))
-    #     elif ex['cur_unit'] == 'JPY(100)':
-    #         ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
+
+    ex_rate_response = req.get(url)
+
+    ex_rate_json = ex_rate_response.json()
+
+
+    before = 1
+    while len(ex_rate_json) == 0:
+
+        day = str(datetime.today().year) + \
+            '%02d' % datetime.today().month + str(datetime.today().day - before)
+        before += 1
+
+        url = 'https://www.koreaexim.go.kr/site/program/financial/exchangeJSON?authkey=EgAaHKyguuwATPc8pOp29tLMJNOSYRw8&searchdate=%s&data=AP01' % day
+
+        ex_rate_response = req.get(url)
+        ex_rate_json = ex_rate_response.json()
+
+
+    ex_rate = {}
+
+    #DEAL_BAS_R
+    for ex in ex_rate_json:
+        if ex['cur_unit'] == 'USD':
+            ex_rate['미국'] = float(ex['deal_bas_r'].replace(',', ''))
+        elif ex['cur_unit'] == 'EUR':
+            ex_rate['프랑스'] = float(ex['deal_bas_r'].replace(',', ''))
+        elif ex['cur_unit'] == 'JPY(100)':
+            ex_rate['일본'] = float(ex['deal_bas_r'].replace(',', '')) / 100
 
     return ex_rate
 
@@ -188,6 +187,7 @@ def addFavorite(request, add_id):
 # Comparing System
 
 #HIT 수 올리기 반영
+#Search DB
 def detail(request, pcode):
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
