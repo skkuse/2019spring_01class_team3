@@ -223,13 +223,13 @@ def delFavorite(request, del_fid):
 ##@saanmin editted
 ##로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 기존에 관심상품으로 등록되어 있는 것은
 ##꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
-
 def detail(request, pcode):
 
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
         p = products[0]
         ex_rate = getExRate()
+        user_fav_list = []
 
         for product in products:
             if request.user.is_authenticated:
@@ -254,17 +254,6 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p,    'user_fav_list':user_fav_list
 })
-
-##코드 중복 삭제..필요...
-'''
-            if user.is_authenticated:
-                print(user)
-                searchlog = Searchlog(uid=user,pcode=product)
-                searchlog.save()
-                print(searchlog)
-'''
-###코드 중복 체크
-
 
 
 # SEARCH system
