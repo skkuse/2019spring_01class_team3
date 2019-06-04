@@ -9,6 +9,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
+from django.http import HttpResponse
+import json
+
 
 # 기본 함수
 
@@ -145,84 +148,123 @@ def register(request):
 def view_favorites(request):
 
     favorites = Favorite.objects.filter(uid=request.user)
+    pcode_list = {}
+    for f in favorites :
+        pcode = f.pid.pcode
+        if pcode in pcode_list :
+            continue
+        else :
+            pcode_list[pcode] = Product.objects.filter(pcode=pcode)[0]
+
 
     # API 추가
     ex_rate = getExRate()
 
     for f in favorites:
         if int(str(f.pid.cid)) != 1:
-            f.pid.price = "{:,}".format(int(ex_rate[str(f.pid.cid.cname)] * int(f.pid.price)))
+            f.pid.price = int(ex_rate[str(f.pid.cid.cname)] * int(f.pid.price))
 
 
-    return render(request, 'favorites.html', {'favorites': favorites})
+    return render(request, 'favorites.html', {'favorites': favorites, 'pcode_list' :pcode_list})
 
+def product_like(request) :
+    pid = request.POST.get('add_pid', None)
+    user = request.user
+
+    product = Product.objects.get(id = pid)
+
+    value = dup_check_favorite(request, pid)
+
+    if( value ) : ##중복 pid 인 favorite가 존재하는 경우
+        value.delete()
+        message = "좋아요 취소"
+
+    else :
+        favorite = Favorite(pid=product, uid=user)
+        favorite.save()
+        message = "좋아요"
+
+    context = {'message': message}
+
+    return HttpResponse(json.dumps(context), content_type="application/json")
+
+
+def dup_check_favorite(request, product_id) :
+
+##pid를 넣고 user의 favorite에서 중복되는 항목을 찾아보고
+#중복의 경우 favorite객체를 리턴
+#중복x인 경우 False값을 리턴
+
+    user = request.user
+    favorites = Favorite.objects.filter(uid=request.user)
+    value = False
+    for f in favorites :
+        if ( str(product_id) == str(f.pid.id) ) :
+            value = f
+
+    return value
 
 def delFavorite(request, del_fid):
     if request.method == 'GET':
-        del_favorite = Favorite.objects.get(fid=del_fid)
-        del_favorite.delete()
+        if( del_fid == 'all') :
+            del_favorites = Favorite.objects.filter(uid = request.user)
+            for f in del_favorites :
+                f.delete()
+        else :
+            del_favorite = Favorite.objects.get(fid=del_fid)
+            del_favorite.delete()
         return view_favorites(request)
-
-
-def addFavorite(request, add_id):
-    print("-------------------------"+add_id)
-    if request.method == 'GET':
-        user = request.user
-        product = Product.objects.get(id=add_id)
-        ko_id = Product.objects.filter(pcode=product.pcode) #.filter(cid=0)
-
-        ######kprice add 기능 구현 ######
-        ###아직 kprice 0으로 뜸! ###
-
-        kprice = '0'
-        for k in ko_id:
-            if k.cid == 1: kprice = "{:,}".format(k.price)
-
-        favorite = Favorite(pid=product, uid=user, kprice=kprice)
-        favorite.save()
-        return detail(request, product.pcode)
 
 
 # Comparing System
 
 #HIT 수 올리기 반영
 #Search DB
+##@saanmin editted
+##로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 기존에 관심상품으로 등록되어 있는 것은
+##꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
+
 def detail(request, pcode):
+
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
-        # print(products)
-        # print(pcode)
-
         p = products[0]
-
-        print("here1")
         ex_rate = getExRate()
-        print("here2")
-        print(ex_rate)
-        print(request.user)
 
         for product in products:
+            if request.user.is_authenticated:
+                user = request.user
+                user_fav_list = list(Favorite.objects.filter(uid = user).values_list('pid', flat=True))
+                searchlog = Searchlog(uid=user,pcode=product)
+                searchlog.save()
+                print(searchlog)
+            ###@saanmin editted
+
+
             if int(str(product.cid)) == 1:
                 # print(product.phit)
                 product.phit += 1
                 product.save()
                 # print(product.phit)
 
-                user = request.user
-                if user.is_authenticated:
-                    print(user)
-                    searchlog = Searchlog(uid=user,pcode=product)
-                    searchlog.save()
-                    print(searchlog)
-
-
 
             else:
-                product.price = int(int(product.price) *
-                                    ex_rate[str(product.cid.cname)])
-            product.price = "{:,}".format(product.price)
+                product.price = int(int(product.price) *ex_rate[str(product.cid.cname)])
+            #product.price = "{:,}".format(product.price)
 
-        return render(request, 'product_detail.html', {'products': products, 'p': p})
+        return render(request, 'product_detail.html', {'products': products, 'p': p,    'user_fav_list':user_fav_list
+})
+
+##코드 중복 삭제..필요...
+'''
+            if user.is_authenticated:
+                print(user)
+                searchlog = Searchlog(uid=user,pcode=product)
+                searchlog.save()
+                print(searchlog)
+'''
+###코드 중복 체크
+
 
 
 # SEARCH system

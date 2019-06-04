@@ -17,17 +17,21 @@
                     {{ product.cid.short_cname }}
                 </td>
                 <td>
-                    {{ product.price }}원</td>
+                    {% load humanize %}
+                    {{ product.price|intcomma }}원</td>
                 <td>
                     <a href={{product.url}} target="_blank"><i class='far fa-paper-plane'></i></a>
                 </td>
                 <td>
                     {% if user.is_authenticated %}
-                    <input type="checkbox" id="favorite_add_del" data-style="quick" data-toggle="toggle"
-                           data-onstyle="link"
-                           onchange="clickEvent(this,{{ product.id }});"
-                           data-on="<i class='fas fa-heart'></i>" data-off="<i class='far fa-heart'></i>">
-                    </input>
+                    <button class="like" style="background-color:transparent;border-color: transparent;box-shadow: none;" name="{{product.id}}"  >
+
+                        {% if product.id in user_fav_list %}<i class="fas fa-heart"></i>
+                        {% else %}<i class="far fa-heart"></i>
+                        {% endif%}
+
+                    </button>
+
 
                     <div id = "results"></div>
 
@@ -47,6 +51,42 @@
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+  $(".like").click(function(){
+
+    icon = $(this).find("i");
+    var add_pid = $(this).attr('name')
+    $.ajax({ // .like 버튼을 클릭하면 <새로고침> 없이 ajax로 서버와 통신하겠다.
+      type: "POST", // 데이터를 전송하는 방법을 지정
+      url: "{% url 'product_like' %}", // 통신할 url을 지정
+      data: {'add_pid': add_pid, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터 전송시 옵션
+      dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정, 없으면 알아서 판단
+      // 서버측에서 전송한 Response 데이터 형식 (json)
+      // {'likes_count': post.like_count, 'message': message }
+      success: function(response){
+
+
+        if(response.message == "좋아요") {
+            icon.toggleClass("far fa-heart fas fa-heart")
+            alert("관심상품으로 등록합니다.")
+        }
+        else if(response.message == "좋아요 취소") {
+            icon.toggleClass("fas fa-heart far fa-heart")
+
+            alert("관심상품에서 제거합니다.")
+        }
+        else {
+            alert("wrong access");
+        }
+      },
+      error: function(request, status, error){
+        alert("통신실패하였습니다")
+      },
+    });
+  })
+</script>
+
 <script>
 
 $(function () {
@@ -54,20 +94,8 @@ $(function () {
 });
 
 
-function clickEvent(chkbox, id){
-    if ( chkbox.checked == true ){
-        var id = id;
-        alert("관심상품으로 추가합니다."+id);
-        // id = parseInt(id);
-        location.href = "/product_detail/" + id;
-        // "{% url 'addFavorite' add_id=id %}" ;
-        }
-    else{
-        alert("관심상품에서 제거합니다."+id);
-        }
-}
-
 </script>
+
 
 <!-- Related Projects Row -->
 <h5 class="mt-5">Related Produts</h5>
