@@ -45,6 +45,11 @@ body {
     margin-bottom: 0px;
 }
 
+/* CAROUSEL */
+.carousel-img {
+    width: 900px;
+    height: 350px;
+}
 
 /* 왼쪽 카테고리 or 브랜드 리스트 */
 

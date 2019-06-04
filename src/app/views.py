@@ -56,34 +56,9 @@ def getExRate():
 
 # HOME
 def home(request):
-    products = Product.objects.filter(cid=1).order_by('-phit')[:20]
-    #### PAGINATOR ####
-    paginator = Paginator(products, 15)
-    page = request.GET.get('page')
-
-    try:
-        search = paginator.page(page)
-
-    except PageNotAnInteger:
-        search = paginator.page(1)
-
-    except EmptyPage:
-        search = paginator.page(paginator.num_pages)
-
-
-    # paginator 범위 5개로 제한
-    page_numbers_range = 5 # 보여줄 페이지 range: 5개
-    max_idx = len(paginator.page_range) # 페이지 개수
-
-    current_page = int(page) if page else 1
-    start_idx = int((current_page - 1)/page_numbers_range) * page_numbers_range
-    end_idx = start_idx + page_numbers_range
-
-    if end_idx >= max_idx: end_idx = max_idx
+    search = Product.objects.filter(cid=1).order_by('-phit')[:20]
     
-    page_range = paginator.page_range[start_idx:end_idx]
-
-    return render(request, 'index.html', {'search':search, 'num_pages':paginator.num_pages})
+    return render(request, 'index.html', {'search':search, 'num_pages':1})
 
 
 def home_filter(request, f, name):
@@ -254,7 +229,6 @@ def detail(request, pcode):
         user_fav_list = []
 
         for product in products:
-            print(product.id)
             if request.user.is_authenticated:
                 user = request.user
                 user_fav_list = list(Favorite.objects.filter(uid = user).values_list('pid', flat=True))
@@ -283,11 +257,7 @@ def detail(request, pcode):
                 recom_result.append(rp)
                 if len(recom_result) == 4: break
 
-        print(recom_result)
         
-        # print(os.listdir("media\img\products"))
-        # print(recom_products)
-
         return render(request, 'product_detail.html', {'products': products, 'p': p, 
         'user_fav_list':user_fav_list, 'recom_products':recom_result})
 

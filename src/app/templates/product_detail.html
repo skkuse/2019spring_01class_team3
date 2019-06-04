@@ -100,14 +100,14 @@
 
 
 <!-- Related Projects Row -->
-<h5 class="mt-5">Related Produts</h5>
+<h5 class="mt-5">Related Products</h5>
 
 <div class="row">
     {% if recom_products %}
     {% for rp in recom_products %}
 
     <div class="col-md-3 col-sm-6 mb-4">
-        <a href="{% url 'detail' pcode=p.pcode %}">
+        <a href="{% url 'detail' pcode=rp.r_pcode %}">
             <img class="img-fluid" src="/media/img/products/{{rp.r_pcode}}.png" alt=""
                 onerror="this.src='http://placehold.it/500x300'"
                 style="height: 180px; width:180px;">
