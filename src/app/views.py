@@ -24,9 +24,8 @@ def getExRate():
 
     ex_rate_json = ex_rate_response.json()
 
-
     before = 1
-    while len(ex_rate_json) == 0:
+    while len(ex_rate_json) == 0 and ex_rate_response != '<Response [200]>':
 
         day = str(datetime.today().year) + \
             '%02d' % datetime.today().month + str(datetime.today().day - before)
