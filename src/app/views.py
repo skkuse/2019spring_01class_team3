@@ -239,10 +239,12 @@ def delFavorite(request, del_fid):
 
 #HIT 수 올리기 반영
 #Search DB
+
 ## @saanmin editted
 ## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 
 ## 기존에 관심상품으로 등록되어 있는 것은
 ## 꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
+
 def detail(request, pcode):
     # pcode = pcode[]
     if request.method == 'GET':
@@ -266,6 +268,7 @@ def detail(request, pcode):
 
             else:
                 product.price = int(int(product.price) *ex_rate[str(product.cid.cname)])
+
         
         recom_products = list(Recommend.objects.filter(pcode=pcode)[:10])
         random.shuffle(recom_products)
@@ -287,6 +290,7 @@ def detail(request, pcode):
 
         return render(request, 'product_detail.html', {'products': products, 'p': p, 
         'user_fav_list':user_fav_list, 'recom_products':recom_result})
+
 
 
 # SEARCH system
