@@ -10,7 +10,7 @@ from django.db.models.query import QuerySet
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.csrf import csrf_protect
 from django.http import HttpResponse
-import json
+import json, random, os
 
 
 # 기본 함수
@@ -57,8 +57,33 @@ def getExRate():
 # HOME
 def home(request):
     products = Product.objects.filter(cid=1).order_by('-phit')[:20]
+    #### PAGINATOR ####
+    paginator = Paginator(products, 15)
+    page = request.GET.get('page')
 
-    return render(request, 'index.html', {'products': products})
+    try:
+        search = paginator.page(page)
+
+    except PageNotAnInteger:
+        search = paginator.page(1)
+
+    except EmptyPage:
+        search = paginator.page(paginator.num_pages)
+
+
+    # paginator 범위 5개로 제한
+    page_numbers_range = 5 # 보여줄 페이지 range: 5개
+    max_idx = len(paginator.page_range) # 페이지 개수
+
+    current_page = int(page) if page else 1
+    start_idx = int((current_page - 1)/page_numbers_range) * page_numbers_range
+    end_idx = start_idx + page_numbers_range
+
+    if end_idx >= max_idx: end_idx = max_idx
+    
+    page_range = paginator.page_range[start_idx:end_idx]
+
+    return render(request, 'index.html', {'search':search, 'num_pages':paginator.num_pages})
 
 
 def home_filter(request, f, name):
@@ -96,7 +121,7 @@ def home_filter(request, f, name):
     
     page_range = paginator.page_range[start_idx:end_idx]
 
-    return render(request, 'index.html', {'products':products})
+    return render(request, 'index.html', {'search':search, 'num_pages':paginator.num_pages})
 
 
 
@@ -106,17 +131,13 @@ def login_request(request):
     if request.method == "POST":
         input_email = request.POST.getlist('email')
         input_password = request.POST.getlist('password')
-        print(input_email)
-        print(input_password)
         user = authenticate(email=input_email, password=input_password)
         # user.is_active = True
 
         if user is not None:
-            print("not none")
             login(request, user)
             return redirect('home')
         else:
-            print("none")
             return render(request, 'login.html', {'error': 'email or password is incorrect'})
     else:
         return render(request, 'login.html')
@@ -190,10 +211,9 @@ def product_like(request) :
 
 
 def dup_check_favorite(request, product_id) :
-
-##pid를 넣고 user의 favorite에서 중복되는 항목을 찾아보고
-#중복의 경우 favorite객체를 리턴
-#중복x인 경우 False값을 리턴
+    ##pid를 넣고 user의 favorite에서 중복되는 항목을 찾아보고
+    #중복의 경우 favorite객체를 리턴
+    #중복x인 경우 False값을 리턴
 
     user = request.user
     favorites = Favorite.objects.filter(uid=request.user)
@@ -201,7 +221,6 @@ def dup_check_favorite(request, product_id) :
     for f in favorites :
         if ( str(product_id) == str(f.pid.id) ) :
             value = f
-
     return value
 
 def delFavorite(request, del_fid):
@@ -220,51 +239,54 @@ def delFavorite(request, del_fid):
 
 #HIT 수 올리기 반영
 #Search DB
-##@saanmin editted
-##로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 기존에 관심상품으로 등록되어 있는 것은
-##꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
-
+## @saanmin editted
+## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 
+## 기존에 관심상품으로 등록되어 있는 것은
+## 꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
 def detail(request, pcode):
-
+    # pcode = pcode[]
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
         p = products[0]
         ex_rate = getExRate()
+        user_fav_list = []
 
         for product in products:
+            print(product.id)
             if request.user.is_authenticated:
                 user = request.user
                 user_fav_list = list(Favorite.objects.filter(uid = user).values_list('pid', flat=True))
                 searchlog = Searchlog(uid=user,pcode=product)
                 searchlog.save()
-                print(searchlog)
-            ###@saanmin editted
-
 
             if int(str(product.cid)) == 1:
                 # print(product.phit)
                 product.phit += 1
                 product.save()
-                # print(product.phit)
-
 
             else:
                 product.price = int(int(product.price) *ex_rate[str(product.cid.cname)])
-            #product.price = "{:,}".format(product.price)
+        
+        recom_products = list(Recommend.objects.filter(pcode=pcode)[:10])
+        random.shuffle(recom_products)
 
-        return render(request, 'product_detail.html', {'products': products, 'p': p,    'user_fav_list':user_fav_list
-})
+        im_list = os.listdir("media\img\products")
 
-##코드 중복 삭제..필요...
-'''
-            if user.is_authenticated:
-                print(user)
-                searchlog = Searchlog(uid=user,pcode=product)
-                searchlog.save()
-                print(searchlog)
-'''
-###코드 중복 체크
+        recom_result = []
+        
+        for rp in recom_products:
+            rp_im = str(rp.r_pcode)+".png"
+            if rp_im in im_list: 
+                recom_result.append(rp)
+                if len(recom_result) == 4: break
 
+        print(recom_result)
+        
+        # print(os.listdir("media\img\products"))
+        # print(recom_products)
+
+        return render(request, 'product_detail.html', {'products': products, 'p': p, 
+        'user_fav_list':user_fav_list, 'recom_products':recom_result})
 
 
 # SEARCH system

@@ -24,7 +24,9 @@
                 </td>
                 <td>
                     {% if user.is_authenticated %}
-                    <button class="like" style="background-color:transparent;border-color: transparent;box-shadow: none;" name="{{product.id}}"  >
+                    <button class="like"
+                        style="background-color:transparent;border-color: transparent;box-shadow: none;"
+                        name="{{product.id}}">
 
                         {% if product.id in user_fav_list %}<i class="fas fa-heart"></i>
                         {% else %}<i class="far fa-heart"></i>
@@ -33,11 +35,11 @@
                     </button>
 
 
-                    <div id = "results"></div>
+                    <div id="results"></div>
 
 
                     {% else %}
-                    <a  data-toggle="guest" data-placement="right" title="로그인 후 이용가능"><i class='far fa-heart'></i></a>
+                    <a data-toggle="guest" data-placement="right" title="로그인 후 이용가능"><i class='far fa-heart'></i></a>
 
 
                     {% endif %}
@@ -53,45 +55,45 @@
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
-  $(".like").click(function(){
+    $(".like").click(function () {
 
-    icon = $(this).find("i");
-    var add_pid = $(this).attr('name')
-    $.ajax({ // .like 버튼을 클릭하면 <새로고침> 없이 ajax로 서버와 통신하겠다.
-      type: "POST", // 데이터를 전송하는 방법을 지정
-      url: "{% url 'product_like' %}", // 통신할 url을 지정
-      data: {'add_pid': add_pid, 'csrfmiddlewaretoken': '{{ csrf_token }}'}, // 서버로 데이터 전송시 옵션
-      dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정, 없으면 알아서 판단
-      // 서버측에서 전송한 Response 데이터 형식 (json)
-      // {'likes_count': post.like_count, 'message': message }
-      success: function(response){
+        icon = $(this).find("i");
+        var add_pid = $(this).attr('name')
+        $.ajax({ // .like 버튼을 클릭하면 <새로고침> 없이 ajax로 서버와 통신하겠다.
+            type: "POST", // 데이터를 전송하는 방법을 지정
+            url: "{% url 'product_like' %}", // 통신할 url을 지정
+            data: { 'add_pid': add_pid, 'csrfmiddlewaretoken': '{{ csrf_token }}' }, // 서버로 데이터 전송시 옵션
+            dataType: "json", // 서버측에서 전송한 데이터를 어떤 형식의 데이터로서 해석할 것인가를 지정, 없으면 알아서 판단
+            // 서버측에서 전송한 Response 데이터 형식 (json)
+            // {'likes_count': post.like_count, 'message': message }
+            success: function (response) {
 
 
-        if(response.message == "좋아요") {
-            icon.toggleClass("far fa-heart fas fa-heart")
-            alert("관심상품으로 등록합니다.")
-        }
-        else if(response.message == "좋아요 취소") {
-            icon.toggleClass("fas fa-heart far fa-heart")
+                if (response.message == "좋아요") {
+                    icon.toggleClass("far fa-heart fas fa-heart")
+                    // alert("관심상품으로 등록합니다.")
+                }
+                else if (response.message == "좋아요 취소") {
+                    icon.toggleClass("fas fa-heart far fa-heart")
 
-            alert("관심상품에서 제거합니다.")
-        }
-        else {
-            alert("wrong access");
-        }
-      },
-      error: function(request, status, error){
-        alert("통신실패하였습니다")
-      },
-    });
-  })
+                    // alert("관심상품에서 제거합니다.")
+                }
+                else {
+                    alert("wrong access");
+                }
+            },
+            error: function (request, status, error) {
+                alert("통신실패하였습니다")
+            },
+        });
+    })
 </script>
 
 <script>
 
-$(function () {
-  $('[data-toggle="guest"]').tooltip()
-});
+    $(function () {
+        $('[data-toggle="guest"]').tooltip()
+    });
 
 
 </script>
@@ -101,30 +103,33 @@ $(function () {
 <h5 class="mt-5">Related Produts</h5>
 
 <div class="row">
+    {% if recom_products %}
+    {% for rp in recom_products %}
 
     <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
+        <a href="{% url 'detail' pcode=p.pcode %}">
+            <img class="img-fluid" src="/media/img/products/{{rp.r_pcode}}.png" alt=""
+                onerror="this.src='http://placehold.it/500x300'"
+                style="height: 180px; width:180px;">
         </a>
     </div>
 
-    <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
-    </div>
+    {% endfor %}
 
+    {% else %}
     <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
+        <img class="img-fluid" src="http://placehold.it/500x300">
     </div>
-
     <div class="col-md-3 col-sm-6 mb-4">
-        <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-        </a>
+        <img class="img-fluid" src="http://placehold.it/500x300">
     </div>
+    <div class="col-md-3 col-sm-6 mb-4">
+        <img class="img-fluid" src="http://placehold.it/500x300">
+    </div>
+    <div class="col-md-3 col-sm-6 mb-4">
+        <img class="img-fluid" src="http://placehold.it/500x300">
+    </div>
+    {% endif %}
 
 </div>
 <!-- /.row -->

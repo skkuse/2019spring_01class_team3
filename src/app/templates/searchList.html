@@ -57,26 +57,6 @@
     {% endfor %}
 </div>
 
-
-<!--페이지 부분. href를 했는데 클릭이 안됨.-->
-<!-- <div class="pagination">
-    <span class="step-links">
-        {% if search.has_previous %}
-
-        <a href="?page={{ search.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ search.number }} of {{ search.paginator.num_pages }}.
-        </span>
-
-        {% if search.has_next %}
-        <a href="?page={{ search.next_page_number }}">next</a>
-
-        {% endif %}
-    </span>
-</div> -->
-
 <nav aria-label="Page" class="mx-auto">
     {% if search.has_other_pages %}
     <ul class="pagination justify-content-center">

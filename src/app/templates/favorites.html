@@ -23,15 +23,29 @@
                     <a href="{% url 'detail' pcode=f.pid.pcode %}">{{f.pid.pname}}</a>
                 </p>
 
-                {% for f in favorites %}
-                {% if f.pid.pcode == pcode %}
-                <p class="disc-price mb-0">{{f.pid.cid.short_cname}} {% load humanize %} \{{f.pid.price|intcomma}}
-                    <a href="{% url 'delFavorite' del_fid=f.fid %}"><i class='far fa-trash-alt' style='font-size:18px'></i></a>
-                    <a href="{{f.pid.url}}" target="_blank"><i class='far fa-paper-plane'></i></a>
+                <table>
+                    {% for f in favorites %}
+                    {% if f.pid.pcode == pcode %}
+                    <tr>
+                        <td>
+                            {{f.pid.cid.short_cname}}
+                        </td>
+                        <td>
+                            {% load humanize %} \{{f.pid.price|intcomma}}
+                        </td>
+                        <td class="small-td">
+                            <a href="{% url 'delFavorite' del_fid=f.fid %}"><i class='far fa-trash-alt'
+                                    style='font-size:18px'></i></a>
+                        </td>
+                        <td class="small-td">
+                            <a href="{{f.pid.url}}" target="_blank"><i class='far fa-paper-plane'></i></a>
 
-                </p>
-                {% endif %}
-                {% endfor %}
+                        </td>
+                    </tr>
+
+                    {% endif %}
+                    {% endfor %}
+                </table>
 
 
             </div>
@@ -53,9 +67,3 @@
 <a href="{% url 'delFavorite' del_fid='all' %}">DELETE ALL</a>
 
 {% endblock content %}
-
-
-
-
-
-

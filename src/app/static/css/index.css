@@ -79,11 +79,9 @@ body {
     font-size: x-small;
     color: #6c757d99;
 }
-
-.disc-price {
-    font-size: large;
+.small-td {
+    /* padding:  */
 }
-
 
 /* Product CARD */
 
