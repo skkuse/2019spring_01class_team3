@@ -21,12 +21,19 @@ Repository for team project by Team 3
 
 ## Sources
 
+### WebSite
+Go to (http://15.164.50.119/)
+
 ### Run
 1. Install all required dependencies
 ```bash
 pip install -r requirements.txt
 ``` 
-2. Start the server
+2. Initialize DB
+```bash
+python manage.py migrate
+```
+3. Start the server
 ```bash
 python manage.py runserver
 ```
