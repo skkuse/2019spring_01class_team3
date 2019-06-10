@@ -3,6 +3,7 @@
 body {
     padding-top: 56px;
     font-family: 'Nanum Gothic', sans-serif;
+    position: relative;
 }
 
 .brand-name {
@@ -11,6 +12,26 @@ body {
 
 .other-brands-name {
     font-family: 'Courgette', cursive;
+}
+
+.other-brand-logo {
+    height: 25px;
+    width: auto;
+    max-width: 200px;
+}
+
+.container {
+    min-height: 100%;
+    margin: 0 auto;
+}
+
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    padding: 0px 10px;
 }
 
 
@@ -24,11 +45,20 @@ body {
     margin-bottom: 0px;
 }
 
+/* CAROUSEL */
+.carousel-img {
+    width: 900px;
+    height: 350px;
+}
 
 /* 왼쪽 카테고리 or 브랜드 리스트 */
 
 .left-list {
     margin-top: 30px;
+}
+
+.left-list a {
+    font-size: 18px;
 }
 
 #select-cat-brand {
@@ -54,17 +84,15 @@ body {
     font-size: x-small;
     color: #6c757d99;
 }
-
-.disc-price {
-    font-size: large;
+.small-td {
+    /* padding:  */
 }
-
 
 /* Product CARD */
 
 .index-card-body {
     position: relative;
-    height: 100px;
+    height: 120px;
     /* padding: 0px; */
 }
 
@@ -81,13 +109,17 @@ body {
     font-size: 18px;
 }
 
+.card-body {
+    padding: 10px;
+}
+
 .card-body-container {
     position: absolute;
     /* bottom: 10px; */
 }
 
 .card-title {
-    /* margin-bottom: 5px; */
+    margin-bottom: 0px;
     font-size: 18px;
 }
 

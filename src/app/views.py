@@ -224,7 +224,7 @@ def detail(request, pcode):
     # pcode = pcode[]
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
-        p = products[0]
+        p = products.filter(cid=1)[0]
         ex_rate = getExRate()
         user_fav_list = []
 
@@ -247,7 +247,7 @@ def detail(request, pcode):
         recom_products = list(Recommend.objects.filter(pcode=pcode)[:10])
         random.shuffle(recom_products)
 
-        im_list = os.listdir("media\img\products")
+        im_list = os.listdir("/var/www/src/media/img/products")
 
         recom_result = []
         
