@@ -141,7 +141,7 @@ def register(request):
 
 
 # Favorites System
-# Kim, Sun Min
+# @Kim, Sun Min
 # get User's Favorites List from DB and send it to 'favorites.html'
 def view_favorites(request):
 
@@ -165,7 +165,7 @@ def view_favorites(request):
 
     return render(request, 'favorites.html', {'favorites': favorites, 'pcode_list' :pcode_list})
 
-# Kim, Sun Min
+# @Kim, Sun Min
 # If user clicks the full heart, delete the product from  user's favorite list.
 # If user clicks the not-full heart, add the product to user's favorite list.
 def product_like(request) :
@@ -189,7 +189,7 @@ def product_like(request) :
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
-# Kim, Sun Min
+# @Kim, Sun Min
 # To get user's favorite list under the same pid.
 def dup_check_favorite(request, product_id) :
     ##pid를 넣고 user의 favorite에서 중복되는 항목을 찾아보고
@@ -205,7 +205,7 @@ def dup_check_favorite(request, product_id) :
     return value
 
 
-#Kim, Sun Min
+#@Kim, Sun Min
 #Delete the favorite item from Favorite page.
 def delFavorite(request, del_fid):
     if request.method == 'GET':
@@ -224,7 +224,7 @@ def delFavorite(request, del_fid):
 #HIT 수 올리기 반영
 #Search DB
 
-## @saanmin editted
+## @saanmin(Kim, Sun Min) editted
 ## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 
 ## 기존에 관심상품으로 등록되어 있는 것은
 ## 꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
