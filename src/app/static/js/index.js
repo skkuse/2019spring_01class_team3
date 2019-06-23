@@ -1,3 +1,5 @@
+// @ Park soo hyun
+// 카테고리 / 브랜드 선택시 display 변경.
 function left_list_change(id) {
 
     if (id == "select-cat") {

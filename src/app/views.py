@@ -13,8 +13,9 @@ from django.http import HttpResponse
 import json, random, os
 
 
-# 기본함수
-
+# Comparing System 
+# @Park, Soo Hyun
+# 환율 API 가져오기
 def getExRate():
     # day format : yyyymmdd
     day = str(datetime.today().year) + \
@@ -54,13 +55,15 @@ def getExRate():
     return ex_rate
 
 
-# HOME
+# @Park, Soo Hyun
+# Home으로 이동
 def home(request):
     search = Product.objects.filter(cid=1).order_by('-phit')[:20]
 
     return render(request, 'index.html', {'search':search, 'num_pages':1})
 
-
+# @Park, Soo Hyun
+# 카테고리 / 브랜드 클릭 시 상품 다르게 표출
 def home_filter(request, f, name):
     products=[]
 
@@ -101,13 +104,14 @@ def home_filter(request, f, name):
 
 
 # User Management System
+# @Jang, Hyun Soo
+# 로그인
 @csrf_protect
 def login_request(request):
     if request.method == "POST":
         input_email = request.POST.getlist('email')
         input_password = request.POST.getlist('password')
         user = authenticate(email=input_email, password=input_password)
-        # user.is_active = True
 
         if user is not None:
             login(request, user)
@@ -117,15 +121,17 @@ def login_request(request):
     else:
         return render(request, 'login.html')
 
-
+# User Management System
+# @Jang, Hyun Soo
+# 로그아웃
 def logout_request(request):
     logout(request)
     return render(request, 'logout.html')
-    # if request.method == 'POST':
-    #     return redirect('home')
-    # return render(request, 'logout.html')
 
 
+# User Management System - register
+# @Park, Soo Hyun
+# Add new user to User DB.
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -140,7 +146,7 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-# Favorites System
+# User Management System - add favorites
 # @Kim, Sun Min
 # get User's Favorites List from DB and send it to 'favorites.html'
 def view_favorites(request):
@@ -219,18 +225,12 @@ def delFavorite(request, del_fid):
         return view_favorites(request)
 
 
-# Comparing System
-
-#HIT 수 올리기 반영
-#Search DB
-
-## @saanmin(Kim, Sun Min) editted
-## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어
-## 기존에 관심상품으로 등록되어 있는 것은
-## 꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
-
+## @Park Soo Hyun
+## 제품 상세 페이지 및 원화 계산 기능 구현
+## @Kim, Sun Min editted
+## 로그인 된 유저가 관심 상품으로 등록하지 않은 상품은 빈 하트, 
+## 기존에 관심상품으로 등록되어 있는 것은 꽉찬 하트
 def detail(request, pcode):
-    # pcode = pcode[]
     if request.method == 'GET':
         products = Product.objects.filter(pcode=pcode)
         p = products.filter(cid=1)[0]
