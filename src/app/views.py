@@ -57,7 +57,7 @@ def getExRate():
 # HOME
 def home(request):
     search = Product.objects.filter(cid=1).order_by('-phit')[:20]
-    
+
     return render(request, 'index.html', {'search':search, 'num_pages':1})
 
 
@@ -69,7 +69,7 @@ def home_filter(request, f, name):
     elif f == "brand":
         products = Product.objects.filter(brand__icontains=name).filter(cid=1).order_by('-phit')
 
-    
+
     #### PAGINATOR ####
     paginator = Paginator(products, 15)
     page = request.GET.get('page')
@@ -93,7 +93,7 @@ def home_filter(request, f, name):
     end_idx = start_idx + page_numbers_range
 
     if end_idx >= max_idx: end_idx = max_idx
-    
+
     page_range = paginator.page_range[start_idx:end_idx]
 
     return render(request, 'index.html', {'search':search, 'num_pages':paginator.num_pages})
@@ -225,7 +225,7 @@ def delFavorite(request, del_fid):
 #Search DB
 
 ## @saanmin(Kim, Sun Min) editted
-## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어 
+## 로그인된 유저의 경우, 원래 pcode에 대하여 관심상품으로 가지고 있는 list를 같이 전달해주어
 ## 기존에 관심상품으로 등록되어 있는 것은
 ## 꽉찬 하트로 나타나도록 만들려고 리스트 넘기기 위해 수정했습니다!
 
@@ -261,27 +261,28 @@ def detail(request, pcode):
             else:
                 product.price = int(int(product.price) *ex_rate[str(product.cid.cname)])
 
-        
+
         recom_products = list(Recommend.objects.filter(pcode=pcode)[:10])
         random.shuffle(recom_products)
 
         im_list = os.listdir("/var/www/src/media/img/products")
 
         recom_result = []
-        
+
         for rp in recom_products:
             rp_im = str(rp.r_pcode)+".png"
-            if rp_im in im_list: 
+            if rp_im in im_list:
                 recom_result.append(rp)
                 if len(recom_result) == 4: break
 
-        
-        return render(request, 'product_detail.html', {'products': products, 'p': p, 
+
+        return render(request, 'product_detail.html', {'products': products, 'p': p,
         'user_fav_list':user_fav_list, 'recom_products':recom_result})
 
 
-
+# @Lee, Gyoyoung
 # SEARCH system
+#search the products by pname or pcode
 def searchList(request):
     try: query = request.GET.get('q')
     except: query = None

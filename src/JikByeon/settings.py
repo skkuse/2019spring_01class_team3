@@ -38,11 +38,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'import_export',
     'el_pagination',
-<<<<<<< HEAD
-    'social_django',
-=======
     'django.contrib.humanize'
->>>>>>> 2e9e29d7fd0f0f937a5c02ee429779e96b310cce
 ]
 
 MIDDLEWARE = [
