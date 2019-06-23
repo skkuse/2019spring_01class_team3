@@ -232,17 +232,8 @@ def delFavorite(request, del_fid):
 def detail(request, pcode):
     # pcode = pcode[]
     if request.method == 'GET':
-<<<<<<< HEAD
-        products = Product.objects.filter(pcoworkde=pcode)
-        # print(products)
-        # print(pcode)
-
-        p = products[0]
-
-=======
         products = Product.objects.filter(pcode=pcode)
         p = products.filter(cid=1)[0]
->>>>>>> 2e9e29d7fd0f0f937a5c02ee429779e96b310cce
         ex_rate = getExRate()
         user_fav_list = []
 
