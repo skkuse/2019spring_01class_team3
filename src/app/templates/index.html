@@ -9,13 +9,13 @@
     </ol>
     <div class="carousel-inner" role="listbox">
         <div class="carousel-item active">
-            <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+            <img class="d-block img-fluid carousel-img" src="/media/img/brands/carousel-img1.png" alt="First slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+            <img class="d-block img-fluid carousel-img" src="/media/img/brands/carousel-img2.png" alt="Second slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+            <img class="d-block img-fluid carousel-img" src="/media/img/brands/petit_eunseok.png" alt="Third slide">
         </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -31,14 +31,13 @@
 
 <!-- 조회수 순서 top N개 -->
 <div class="row mt-4" id="view-top-20-items">
-
-    {% for p in products %}
+    {% for p in search %}
     <div class="col-lg-4 col-md-6 mb-4">
         <div class="card h-100">
             <p class="card-brand other-brands-name">{{p.brand}}</p>
             <a href="{% url 'detail' pcode=p.pcode %}">
                 <img class="card-img-top product-img" src="/media/img/products/{{p.pcode}}.png" alt=""
-                onerror="this.src='http://placehold.it/500x300'">
+                    onerror="this.src='http://placehold.it/500x300'">
             </a>
             <div class="card-body index-card-body">
                 <div class="card-body-container">
@@ -52,5 +51,84 @@
     {% endfor %}
 </div>
 <!-- /.row -->
+
+<nav aria-label="Page" class="mx-auto">
+    {% if search.has_other_pages %}
+    <ul class="pagination justify-content-center">
+        {% if search.has_previous %}
+        <!-- 이전 -->
+        <li class="page-item">
+            <!-- 처음 페이지 -->
+            <a class="page-link" href="?page=1">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <!-- 이전 페이지 -->
+            <a class="page-link"
+                href="?page={{ search.previous_page_number }}">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <!-- 처음 페이지 -->
+            <a class="page-link" href="#!">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&lt;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+
+        {% for num in page_range %}
+        {% if search.number == num %}
+        <li class="page-item active"><a class="page-link" href="#!">{{ num }}</a></li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if search.has_next %}
+        <!-- 이후 -->
+        <li class="page-item">
+            <a class="page-link"
+                href="?page={{ search.next_page_number }}">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num_pages }}">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&gt;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% endif %}
+    <!-- Pagination endif -->
+
+</nav>
 
 {% endblock content %}
