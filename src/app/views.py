@@ -13,7 +13,7 @@ from django.http import HttpResponse
 import json, random, os
 
 
-# 기본 함수
+# 기본함수
 
 def getExRate():
     # day format : yyyymmdd
@@ -141,6 +141,8 @@ def register(request):
 
 
 # Favorites System
+# Kim, Sun Min
+# get User's Favorites List from DB and send it to 'favorites.html'
 def view_favorites(request):
 
     favorites = Favorite.objects.filter(uid=request.user)
@@ -163,6 +165,9 @@ def view_favorites(request):
 
     return render(request, 'favorites.html', {'favorites': favorites, 'pcode_list' :pcode_list})
 
+# Kim, Sun Min
+# If user clicks the full heart, delete the product from  user's favorite list.
+# If user clicks the not-full heart, add the product to user's favorite list.
 def product_like(request) :
     pid = request.POST.get('add_pid', None)
     user = request.user
@@ -184,7 +189,8 @@ def product_like(request) :
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
-
+# Kim, Sun Min
+# To get user's favorite list under the same pid.
 def dup_check_favorite(request, product_id) :
     ##pid를 넣고 user의 favorite에서 중복되는 항목을 찾아보고
     #중복의 경우 favorite객체를 리턴
@@ -198,6 +204,9 @@ def dup_check_favorite(request, product_id) :
             value = f
     return value
 
+
+#Kim, Sun Min
+#Delete the favorite item from Favorite page.
 def delFavorite(request, del_fid):
     if request.method == 'GET':
         if( del_fid == 'all') :
