@@ -6,7 +6,7 @@ chardet==3.0.4
 colorama==0.3.9
 defusedxml==0.6.0
 diff-match-patch==20181111
-Django==2.2.1
+Django==2.2.8
 django-crispy-forms==1.7.2
 django-el-pagination==3.2.4
 django-import-export==1.2.0
